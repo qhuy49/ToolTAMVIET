@@ -1,0 +1,87 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="MinvoiceLoadDataMisa.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="TableInvocie" Type="System.String" Scope="User">
+      <Value Profile="(Default)">SAInvoice</Value>
+    </Setting>
+    <Setting Name="TableInvoiceDetail" Type="System.String" Scope="User">
+      <Value Profile="(Default)">SAInvoiceDetail</Value>
+    </Setting>
+    <Setting Name="TableVoucherDetail" Type="System.String" Scope="User">
+      <Value Profile="(Default)">SAVoucherDetail</Value>
+    </Setting>
+    <Setting Name="ConnectionString" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="UsernameLoginWeb" Type="System.String" Scope="User">
+      <Value Profile="(Default)">MV</Value>
+    </Setting>
+    <Setting Name="PasswordLoginWeb" Type="System.String" Scope="User">
+      <Value Profile="(Default)">123456</Value>
+    </Setting>
+    <Setting Name="UrlLogin" Type="System.String" Scope="User">
+      <Value Profile="(Default)">http://demo.minvoice.com.vn/api/Account/Login</Value>
+    </Setting>
+    <Setting Name="UrlSave" Type="System.String" Scope="User">
+      <Value Profile="(Default)">http://demo.minvoice.com.vn/api/System/Save</Value>
+    </Setting>
+    <Setting Name="UrlGetInvoiceByInvoiceAuthId" Type="System.String" Scope="User">
+      <Value Profile="(Default)">http://demo.minvoice.com.vn/api/Invoice/GetById?id=</Value>
+    </Setting>
+    <Setting Name="TimeLoadData" Type="System.String" Scope="User">
+      <Value Profile="(Default)">300</Value>
+    </Setting>
+    <Setting Name="MauSo" Type="System.String" Scope="User">
+      <Value Profile="(Default)">01GTKT0/001</Value>
+    </Setting>
+    <Setting Name="KyHieu" Type="System.String" Scope="User">
+      <Value Profile="(Default)">MV/18E</Value>
+    </Setting>
+    <Setting Name="UrlRef" Type="System.String" Scope="User">
+      <Value Profile="(Default)">http://demo.minvoice.com.vn/api/System/GetDataReferencesByRefId?refId=RF00187</Value>
+    </Setting>
+    <Setting Name="InvoiceCodeId" Type="System.String" Scope="User">
+      <Value Profile="(Default)">A71843F0-3D8B-4ACD-811F-F3EE4421DF77</Value>
+    </Setting>
+    <Setting Name="TableVoucher" Type="System.String" Scope="User">
+      <Value Profile="(Default)">SAVoucher</Value>
+    </Setting>
+    <Setting Name="Command" Type="System.String" Scope="User">
+      <Value Profile="(Default)">CM00027</Value>
+    </Setting>
+    <Setting Name="UrlCommand" Type="System.String" Scope="User">
+      <Value Profile="(Default)">http://demo.minvoice.com.vn/api/System/ExecuteCommand</Value>
+    </Setting>
+    <Setting Name="Version" Type="System.String" Scope="User">
+      <Value Profile="(Default)">2017</Value>
+    </Setting>
+    <Setting Name="TableInventoryItem" Type="System.String" Scope="User">
+      <Value Profile="(Default)">InventoryItem</Value>
+    </Setting>
+    <Setting Name="TableUnit" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Unit</Value>
+    </Setting>
+    <Setting Name="RefInventoryItem" Type="System.String" Scope="User">
+      <Value Profile="(Default)">InventoryItemID</Value>
+    </Setting>
+    <Setting Name="RefUnit" Type="System.String" Scope="User">
+      <Value Profile="(Default)">UnitID</Value>
+    </Setting>
+    <Setting Name="serverName" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="database" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="userName" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="passWord" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="InvoiceCodeId2" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+  </Settings>
+</SettingsFile>
