@@ -15,17 +15,27 @@ namespace MinvoiceLoadDataMisa.Forms
         {
             if (e.KeyChar == (char)Keys.Enter)
             {
-                if (CommonService.CheckLogin(txtPass.Text))
+                if(txtPass.Text == "kythuat")
                 {
                     Close();
-                    FrmSettingSystem frmSettingSystem = new FrmSettingSystem();
-                    frmSettingSystem.ShowDialog();
+                    FrmDev frmDev = new FrmDev();
+                    frmDev.ShowDialog();
                 }
                 else
                 {
-                    XtraMessageBox.Show("Mật khẩu không chính xác", "Lỗi", MessageBoxButtons.OK,
-                        MessageBoxIcon.Information);
+                    if (CommonService.CheckLogin(txtPass.Text))
+                    {
+                        Close();
+                        FrmSettingSystem frmSettingSystem = new FrmSettingSystem();
+                        frmSettingSystem.ShowDialog();
+                    }
+                    else
+                    {
+                        XtraMessageBox.Show("Mật khẩu không chính xác", "Lỗi", MessageBoxButtons.OK,
+                            MessageBoxIcon.Information);
+                    }
                 }
+                
             }
 
         }

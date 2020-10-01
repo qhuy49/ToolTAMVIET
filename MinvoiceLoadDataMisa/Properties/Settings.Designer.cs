@@ -346,5 +346,41 @@ namespace MinvoiceLoadDataMisa.Properties {
                 this["InvoiceCodeId2"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string _kyHieu {
+            get {
+                return ((string)(this["_kyHieu"]));
+            }
+            set {
+                this["_kyHieu"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Editmode {
+            get {
+                return ((string)(this["Editmode"]));
+            }
+            set {
+                this["Editmode"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string connectLog {
+            get {
+                return ((string)(this["connectLog"]));
+            }
+            set {
+                this["connectLog"] = value;
+            }
+        }
     }
 }

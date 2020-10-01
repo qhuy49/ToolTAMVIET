@@ -46,6 +46,7 @@
             this.dteTuNgay = new DevExpress.XtraEditors.DateEdit();
             this.chkAll = new DevExpress.XtraEditors.CheckEdit();
             this.checkedListBoxControl1 = new DevExpress.XtraEditors.CheckedListBoxControl();
+            this.txt_kyHieu = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).BeginInit();
             this.panelControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl2)).BeginInit();
@@ -96,6 +97,7 @@
             // 
             // panelControl2
             // 
+            this.panelControl2.Controls.Add(this.txt_kyHieu);
             this.panelControl2.Controls.Add(this.slokMauHoaDon1);
             this.panelControl2.Controls.Add(this.btnCall);
             this.panelControl2.Controls.Add(this.btnGetData);
@@ -111,13 +113,13 @@
             // slokMauHoaDon1
             // 
             this.slokMauHoaDon1.EditValue = "";
-            this.slokMauHoaDon1.Location = new System.Drawing.Point(264, 8);
+            this.slokMauHoaDon1.Location = new System.Drawing.Point(347, 9);
             this.slokMauHoaDon1.Name = "slokMauHoaDon1";
             this.slokMauHoaDon1.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.slokMauHoaDon1.Properties.NullText = "";
             this.slokMauHoaDon1.Properties.View = this.searchLookUpEdit1View;
-            this.slokMauHoaDon1.Size = new System.Drawing.Size(210, 20);
+            this.slokMauHoaDon1.Size = new System.Drawing.Size(110, 20);
             this.slokMauHoaDon1.TabIndex = 64;
             // 
             // searchLookUpEdit1View
@@ -159,7 +161,7 @@
             // btnCall
             // 
             this.btnCall.Image = ((System.Drawing.Image)(resources.GetObject("btnCall.Image")));
-            this.btnCall.Location = new System.Drawing.Point(480, 4);
+            this.btnCall.Location = new System.Drawing.Point(260, 4);
             this.btnCall.Name = "btnCall";
             this.btnCall.Size = new System.Drawing.Size(81, 30);
             this.btnCall.TabIndex = 4;
@@ -218,6 +220,13 @@
             this.checkedListBoxControl1.Size = new System.Drawing.Size(681, 301);
             this.checkedListBoxControl1.TabIndex = 4;
             // 
+            // txt_kyHieu
+            // 
+            this.txt_kyHieu.Location = new System.Drawing.Point(463, 9);
+            this.txt_kyHieu.Name = "txt_kyHieu";
+            this.txt_kyHieu.Size = new System.Drawing.Size(112, 21);
+            this.txt_kyHieu.TabIndex = 65;
+            // 
             // FrmSelectInvoice
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -238,6 +247,7 @@
             this.panelControl1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.panelControl2)).EndInit();
             this.panelControl2.ResumeLayout(false);
+            this.panelControl2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.slokMauHoaDon1.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.searchLookUpEdit1View)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dteDenNgay.Properties.CalendarTimeProperties)).EndInit();
@@ -267,5 +277,6 @@
         private DevExpress.XtraGrid.Columns.GridColumn id;
         private DevExpress.XtraGrid.Columns.GridColumn mau_so;
         private DevExpress.XtraGrid.Columns.GridColumn ky_hieu;
+        private System.Windows.Forms.TextBox txt_kyHieu;
     }
 }

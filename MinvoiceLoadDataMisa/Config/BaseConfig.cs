@@ -53,7 +53,12 @@ namespace MinvoiceLoadDataMisa.Config
         public static string RefInventoryItem = Properties.Settings.Default.RefInventoryItem.Trim();
 
         public static string RefUnit = Properties.Settings.Default.RefUnit.Trim();
+
         public static string IDUpdate = Properties.Settings.Default.InvoiceCodeId2.Trim();
+
+        public static string _kyHieu = Properties.Settings.Default._kyHieu.Trim();
+
+        public static string editmode = Properties.Settings.Default.Editmode.Trim();
 
     }
 

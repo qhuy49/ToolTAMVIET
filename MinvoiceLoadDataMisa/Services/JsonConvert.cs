@@ -18,12 +18,26 @@ namespace MinvoiceLoadDataMisa.Services
             Log.Debug($"InvDate: {row["InvDate"].ToString()}");
             try
             {
+                
                 var jObject = new JObject();
 
                 jObject.Add("inv_InvoiceAuth_id", row["RefID"].ToString());
                 jObject.Add("inv_invoiceType", "01GTKT");
-                jObject.Add("inv_InvoiceCode_id", BaseConfig.InvoiceCodeId);
-                jObject.Add("inv_invoiceSeries", BaseConfig.KyHieu);
+                if(Properties.Settings.Default.Editmode == "1")
+                {
+                    jObject.Add("inv_InvoiceCode_id", Properties.Settings.Default.InvoiceCodeId);
+                }else
+                {
+                    jObject.Add("inv_InvoiceCode_id", Properties.Settings.Default.InvoiceCodeId2);
+                }
+                if (Properties.Settings.Default.Editmode == "1")
+                {
+                    jObject.Add("inv_invoiceSeries", Properties.Settings.Default.KyHieu);
+                }else
+                {
+                    jObject.Add("inv_invoiceSeries", Properties.Settings.Default._kyHieu);
+                }
+                    
                 jObject.Add("inv_invoiceNumber", row["InvNo"].ToString());
                 jObject.Add("inv_invoiceName", "Hóa đơn giá trị gia tăng");
                 jObject.Add("inv_invoiceIssuedDate", DateTime.Parse(row["InvDate"].ToString()).ToString("yyyy-MM-dd"));
@@ -336,10 +350,7 @@ namespace MinvoiceLoadDataMisa.Services
 
             if (BaseConfig.Version.Equals("2017"))
             {
-                //string whereVoucherDetail = $"WHERE SAInvoiceRefID = '{refId}' ORDER BY SortOrder";
-                //var dataTableVoucherDetail =
-                //    DataContext.GetDataTableTest(sqlConnection, BaseConfig.TableVoucherDetail, whereVoucherDetail);
-
+                
                 string whereVoucherDetail = $" WHERE a.SAInvoiceRefID = '{refId}' ORDER BY a.SortOrder";
                 string sqlSelectVoucherDetail = CommonConstants.SqlSelectSaVoucherDetail2017;
                 sqlSelectVoucherDetail += whereVoucherDetail;

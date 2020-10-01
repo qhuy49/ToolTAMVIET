@@ -23,7 +23,11 @@
 
         public static string MauSo = "MauSo";
 
+        public static string Editmode = "Editmode";
+
         public static string KyHieu = "KyHieu";
+
+        public static string _kyHieu = "_kyHieu";
 
         public static string UrlRef = "UrlRef";
 
@@ -47,7 +51,9 @@
 
         public static string RefUnit = "RefUnit";
 
-        public static string SqlSelectSaInvoice = $"SELECT * FROM {BaseConfig.TableInvocie} WHERE InvSeries = '{BaseConfig.KyHieu}' AND IsInvoice IS NULL ORDER BY InvDate";
+        public static string connectLog = "connectLog";
+
+        public static string SqlSelectSaInvoice = $"SELECT * FROM {BaseConfig.TableInvocie} WHERE InvSeries = '{BaseConfig.KyHieu}' AND IsInvoice IS NULL ORDER BY InvDate, InvNo ASC";
 
         public static string SqlSelectSaInvoiceDetail2012 = $"SELECT a.*, b.InventoryItemCode FROM {BaseConfig.TableInvoiceDetail} AS a LEFT JOIN {BaseConfig.TableInventoryItem} AS b ON b.{BaseConfig.RefInventoryItem} = a.{BaseConfig.RefInventoryItem} ";
 

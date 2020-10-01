@@ -29,18 +29,8 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmSettingSystem));
-            this.txtInvoiceCodeId = new DevExpress.XtraEditors.TextEdit();
-            this.labelControl11 = new DevExpress.XtraEditors.LabelControl();
-            this.slokMauHoaDon = new DevExpress.XtraEditors.SearchLookUpEdit();
-            this.searchLookUpEdit1View = new DevExpress.XtraGrid.Views.Grid.GridView();
-            this.btnLayDuLieu = new DevExpress.XtraEditors.SimpleButton();
-            this.labelControl15 = new DevExpress.XtraEditors.LabelControl();
             this.txtUrlRef = new DevExpress.XtraEditors.TextEdit();
             this.labelControl14 = new DevExpress.XtraEditors.LabelControl();
-            this.txtKyHieu = new System.Windows.Forms.TextBox();
-            this.labelControl13 = new DevExpress.XtraEditors.LabelControl();
-            this.txtMauSo = new System.Windows.Forms.TextBox();
-            this.labelControl12 = new DevExpress.XtraEditors.LabelControl();
             this.numTimeGetData = new System.Windows.Forms.NumericUpDown();
             this.labelControl10 = new DevExpress.XtraEditors.LabelControl();
             this.lblConnectionString = new DevExpress.XtraEditors.LabelControl();
@@ -81,12 +71,7 @@
             this.labelControl24 = new DevExpress.XtraEditors.LabelControl();
             this.btnSave = new DevExpress.XtraEditors.SimpleButton();
             this.btnUpdateIsInvoice = new DevExpress.XtraEditors.SimpleButton();
-            this.id = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.mau_so = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.ky_hieu = new DevExpress.XtraGrid.Columns.GridColumn();
-            ((System.ComponentModel.ISupportInitialize)(this.txtInvoiceCodeId.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.slokMauHoaDon.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.searchLookUpEdit1View)).BeginInit();
+            this.btnLog = new DevExpress.XtraEditors.SimpleButton();
             ((System.ComponentModel.ISupportInitialize)(this.txtUrlRef.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numTimeGetData)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtUrlGetInvoice.Properties)).BeginInit();
@@ -107,63 +92,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.txtRefUnit.Properties)).BeginInit();
             this.SuspendLayout();
             // 
-            // txtInvoiceCodeId
-            // 
-            this.txtInvoiceCodeId.Location = new System.Drawing.Point(505, 350);
-            this.txtInvoiceCodeId.Name = "txtInvoiceCodeId";
-            this.txtInvoiceCodeId.Size = new System.Drawing.Size(135, 20);
-            this.txtInvoiceCodeId.TabIndex = 65;
-            // 
-            // labelControl11
-            // 
-            this.labelControl11.Location = new System.Drawing.Point(423, 353);
-            this.labelControl11.Name = "labelControl11";
-            this.labelControl11.Size = new System.Drawing.Size(76, 13);
-            this.labelControl11.TabIndex = 64;
-            this.labelControl11.Text = "Invoice Code Id";
-            // 
-            // slokMauHoaDon
-            // 
-            this.slokMauHoaDon.EditValue = "";
-            this.slokMauHoaDon.Location = new System.Drawing.Point(100, 312);
-            this.slokMauHoaDon.Name = "slokMauHoaDon";
-            this.slokMauHoaDon.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.slokMauHoaDon.Properties.NullText = "";
-            this.slokMauHoaDon.Properties.View = this.searchLookUpEdit1View;
-            this.slokMauHoaDon.Size = new System.Drawing.Size(153, 20);
-            this.slokMauHoaDon.TabIndex = 63;
-            this.slokMauHoaDon.EditValueChanged += new System.EventHandler(this.slokMauHoaDon_EditValueChanged);
-            // 
-            // searchLookUpEdit1View
-            // 
-            this.searchLookUpEdit1View.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
-            this.id,
-            this.mau_so,
-            this.ky_hieu});
-            this.searchLookUpEdit1View.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
-            this.searchLookUpEdit1View.Name = "searchLookUpEdit1View";
-            this.searchLookUpEdit1View.OptionsDetail.DetailMode = DevExpress.XtraGrid.Views.Grid.DetailMode.Default;
-            this.searchLookUpEdit1View.OptionsSelection.EnableAppearanceFocusedCell = false;
-            this.searchLookUpEdit1View.OptionsView.ShowGroupPanel = false;
-            // 
-            // btnLayDuLieu
-            // 
-            this.btnLayDuLieu.Location = new System.Drawing.Point(259, 309);
-            this.btnLayDuLieu.Name = "btnLayDuLieu";
-            this.btnLayDuLieu.Size = new System.Drawing.Size(49, 23);
-            this.btnLayDuLieu.TabIndex = 62;
-            this.btnLayDuLieu.Text = "Lấy";
-            this.btnLayDuLieu.Click += new System.EventHandler(this.btnLayDuLieu_Click);
-            // 
-            // labelControl15
-            // 
-            this.labelControl15.Location = new System.Drawing.Point(10, 315);
-            this.labelControl15.Name = "labelControl15";
-            this.labelControl15.Size = new System.Drawing.Size(62, 13);
-            this.labelControl15.TabIndex = 61;
-            this.labelControl15.Text = "Chọn mẫu số";
-            // 
             // txtUrlRef
             // 
             this.txtUrlRef.Location = new System.Drawing.Point(100, 280);
@@ -179,39 +107,9 @@
             this.labelControl14.TabIndex = 59;
             this.labelControl14.Text = "Url RefId";
             // 
-            // txtKyHieu
-            // 
-            this.txtKyHieu.Location = new System.Drawing.Point(294, 350);
-            this.txtKyHieu.Name = "txtKyHieu";
-            this.txtKyHieu.Size = new System.Drawing.Size(123, 21);
-            this.txtKyHieu.TabIndex = 58;
-            // 
-            // labelControl13
-            // 
-            this.labelControl13.Location = new System.Drawing.Point(241, 353);
-            this.labelControl13.Name = "labelControl13";
-            this.labelControl13.Size = new System.Drawing.Size(35, 13);
-            this.labelControl13.TabIndex = 57;
-            this.labelControl13.Text = "Ký hiệu";
-            // 
-            // txtMauSo
-            // 
-            this.txtMauSo.Location = new System.Drawing.Point(100, 350);
-            this.txtMauSo.Name = "txtMauSo";
-            this.txtMauSo.Size = new System.Drawing.Size(135, 21);
-            this.txtMauSo.TabIndex = 56;
-            // 
-            // labelControl12
-            // 
-            this.labelControl12.Location = new System.Drawing.Point(10, 353);
-            this.labelControl12.Name = "labelControl12";
-            this.labelControl12.Size = new System.Drawing.Size(34, 13);
-            this.labelControl12.TabIndex = 55;
-            this.labelControl12.Text = "Mẫu số";
-            // 
             // numTimeGetData
             // 
-            this.numTimeGetData.Location = new System.Drawing.Point(505, 382);
+            this.numTimeGetData.Location = new System.Drawing.Point(503, 316);
             this.numTimeGetData.Maximum = new decimal(new int[] {
             1000000,
             0,
@@ -224,7 +122,7 @@
             // 
             // labelControl10
             // 
-            this.labelControl10.Location = new System.Drawing.Point(423, 386);
+            this.labelControl10.Location = new System.Drawing.Point(421, 320);
             this.labelControl10.Name = "labelControl10";
             this.labelControl10.Size = new System.Drawing.Size(70, 13);
             this.labelControl10.TabIndex = 53;
@@ -384,7 +282,7 @@
             // 
             // labelControl17
             // 
-            this.labelControl17.Location = new System.Drawing.Point(241, 386);
+            this.labelControl17.Location = new System.Drawing.Point(239, 320);
             this.labelControl17.Name = "labelControl17";
             this.labelControl17.Size = new System.Drawing.Size(47, 13);
             this.labelControl17.TabIndex = 68;
@@ -392,14 +290,14 @@
             // 
             // txtCommand
             // 
-            this.txtCommand.Location = new System.Drawing.Point(294, 383);
+            this.txtCommand.Location = new System.Drawing.Point(292, 317);
             this.txtCommand.Name = "txtCommand";
             this.txtCommand.Size = new System.Drawing.Size(123, 20);
             this.txtCommand.TabIndex = 69;
             // 
             // labelControl18
             // 
-            this.labelControl18.Location = new System.Drawing.Point(10, 386);
+            this.labelControl18.Location = new System.Drawing.Point(8, 320);
             this.labelControl18.Name = "labelControl18";
             this.labelControl18.Size = new System.Drawing.Size(63, 13);
             this.labelControl18.TabIndex = 70;
@@ -407,7 +305,7 @@
             // 
             // txtUrlCommand
             // 
-            this.txtUrlCommand.Location = new System.Drawing.Point(100, 383);
+            this.txtUrlCommand.Location = new System.Drawing.Point(98, 317);
             this.txtUrlCommand.Name = "txtUrlCommand";
             this.txtUrlCommand.Size = new System.Drawing.Size(135, 20);
             this.txtUrlCommand.TabIndex = 71;
@@ -512,51 +410,37 @@
             // 
             this.btnSave.Image = ((System.Drawing.Image)(resources.GetObject("btnSave.Image")));
             this.btnSave.ImageLocation = DevExpress.XtraEditors.ImageLocation.TopCenter;
-            this.btnSave.Location = new System.Drawing.Point(564, 417);
+            this.btnSave.Location = new System.Drawing.Point(503, 351);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(75, 47);
+            this.btnSave.Size = new System.Drawing.Size(134, 47);
             this.btnSave.TabIndex = 50;
             this.btnSave.Text = "Lưu";
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // btnUpdateIsInvoice
             // 
-            this.btnUpdateIsInvoice.Location = new System.Drawing.Point(100, 417);
+            this.btnUpdateIsInvoice.Location = new System.Drawing.Point(292, 351);
             this.btnUpdateIsInvoice.Name = "btnUpdateIsInvoice";
-            this.btnUpdateIsInvoice.Size = new System.Drawing.Size(138, 46);
+            this.btnUpdateIsInvoice.Size = new System.Drawing.Size(135, 46);
             this.btnUpdateIsInvoice.TabIndex = 84;
             this.btnUpdateIsInvoice.Text = "Cập nhật IsInvoice";
             this.btnUpdateIsInvoice.Click += new System.EventHandler(this.btnUpdateIsInvoice_Click);
             // 
-            // id
+            // btnLog
             // 
-            this.id.Caption = "Invoice code id";
-            this.id.FieldName = "Id";
-            this.id.Name = "id";
-            this.id.Visible = true;
-            this.id.VisibleIndex = 0;
-            // 
-            // mau_so
-            // 
-            this.mau_so.Caption = "Mẫu số";
-            this.mau_so.FieldName = "MauSo";
-            this.mau_so.Name = "mau_so";
-            this.mau_so.Visible = true;
-            this.mau_so.VisibleIndex = 1;
-            // 
-            // ky_hieu
-            // 
-            this.ky_hieu.Caption = "Ký hiệu";
-            this.ky_hieu.FieldName = "KyHieu";
-            this.ky_hieu.Name = "ky_hieu";
-            this.ky_hieu.Visible = true;
-            this.ky_hieu.VisibleIndex = 2;
+            this.btnLog.Location = new System.Drawing.Point(98, 352);
+            this.btnLog.Name = "btnLog";
+            this.btnLog.Size = new System.Drawing.Size(135, 46);
+            this.btnLog.TabIndex = 85;
+            this.btnLog.Text = "Tạo Log";
+            this.btnLog.Click += new System.EventHandler(this.btnLog_Click);
             // 
             // FrmSettingSystem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(648, 475);
+            this.ClientSize = new System.Drawing.Size(648, 405);
+            this.Controls.Add(this.btnLog);
             this.Controls.Add(this.btnUpdateIsInvoice);
             this.Controls.Add(this.txtRefUnit);
             this.Controls.Add(this.labelControl24);
@@ -576,17 +460,8 @@
             this.Controls.Add(this.labelControl17);
             this.Controls.Add(this.txtTableVoucher);
             this.Controls.Add(this.labelControl16);
-            this.Controls.Add(this.txtInvoiceCodeId);
-            this.Controls.Add(this.labelControl11);
-            this.Controls.Add(this.slokMauHoaDon);
-            this.Controls.Add(this.btnLayDuLieu);
-            this.Controls.Add(this.labelControl15);
             this.Controls.Add(this.txtUrlRef);
             this.Controls.Add(this.labelControl14);
-            this.Controls.Add(this.txtKyHieu);
-            this.Controls.Add(this.labelControl13);
-            this.Controls.Add(this.txtMauSo);
-            this.Controls.Add(this.labelControl12);
             this.Controls.Add(this.numTimeGetData);
             this.Controls.Add(this.labelControl10);
             this.Controls.Add(this.lblConnectionString);
@@ -613,9 +488,6 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Cấu hình thông số hệ thống";
             this.Load += new System.EventHandler(this.FrmSettingSystem_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.txtInvoiceCodeId.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.slokMauHoaDon.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.searchLookUpEdit1View)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtUrlRef.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numTimeGetData)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtUrlGetInvoice.Properties)).EndInit();
@@ -640,22 +512,8 @@
         }
 
         #endregion
-
-        private DevExpress.XtraEditors.TextEdit txtInvoiceCodeId;
-        private DevExpress.XtraEditors.LabelControl labelControl11;
-        private DevExpress.XtraEditors.SearchLookUpEdit slokMauHoaDon;
-        private DevExpress.XtraGrid.Views.Grid.GridView searchLookUpEdit1View;
-        private DevExpress.XtraGrid.Columns.GridColumn id;
-        private DevExpress.XtraGrid.Columns.GridColumn mau_so;
-        private DevExpress.XtraGrid.Columns.GridColumn ky_hieu;
-        private DevExpress.XtraEditors.SimpleButton btnLayDuLieu;
-        private DevExpress.XtraEditors.LabelControl labelControl15;
         private DevExpress.XtraEditors.TextEdit txtUrlRef;
         private DevExpress.XtraEditors.LabelControl labelControl14;
-        private System.Windows.Forms.TextBox txtKyHieu;
-        private DevExpress.XtraEditors.LabelControl labelControl13;
-        private System.Windows.Forms.TextBox txtMauSo;
-        private DevExpress.XtraEditors.LabelControl labelControl12;
         private System.Windows.Forms.NumericUpDown numTimeGetData;
         private DevExpress.XtraEditors.LabelControl labelControl10;
         private DevExpress.XtraEditors.LabelControl lblConnectionString;
@@ -696,5 +554,6 @@
         private DevExpress.XtraEditors.TextEdit txtRefUnit;
         private DevExpress.XtraEditors.LabelControl labelControl24;
         private DevExpress.XtraEditors.SimpleButton btnUpdateIsInvoice;
+        private DevExpress.XtraEditors.SimpleButton btnLog;
     }
 }

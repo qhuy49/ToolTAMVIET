@@ -37,7 +37,6 @@
     <Reference Include="DevExpress.Data.v16.1, Version=16.1.2.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Images.v16.1, Version=16.1.2.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\ToolDesignMinvoice\ToolDesignUpdate_V3\ToolDesignUpdate\ToolDesignUpdate\bin\Debug\DevExpress.Images.v16.1.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Printing.v16.1.Core, Version=16.1.2.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Sparkline.v16.1.Core, Version=16.1.2.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
@@ -73,6 +72,7 @@
   <ItemGroup>
     <Compile Include="Config\BaseConfig.cs" />
     <Compile Include="Config\CommonConstants.cs" />
+    <Compile Include="Config\CreateLogs.cs" />
     <Compile Include="Data\BaseObject.cs" />
     <Compile Include="Data\InvoiceObject.cs" />
     <Compile Include="Data\MauHoaDon.cs" />
@@ -81,6 +81,12 @@
     </Compile>
     <Compile Include="Forms\FrmConnectDatabase.Designer.cs">
       <DependentUpon>FrmConnectDatabase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FrmDev.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmDev.Designer.cs">
+      <DependentUpon>FrmDev.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\FrmGetDate.cs">
       <SubType>Form</SubType>
@@ -112,6 +118,12 @@
     <Compile Include="Forms\FrmSettingSystem.Designer.cs">
       <DependentUpon>FrmSettingSystem.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\GridView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\GridView.Designer.cs">
+      <DependentUpon>GridView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\CommonService.cs" />
@@ -128,6 +140,9 @@
     <EmbeddedResource Include="Forms\FrmConnectDatabase.resx">
       <DependentUpon>FrmConnectDatabase.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmDev.resx">
+      <DependentUpon>FrmDev.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmGetDate.resx">
       <DependentUpon>FrmGetDate.cs</DependentUpon>
     </EmbeddedResource>
@@ -142,6 +157,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmSettingSystem.resx">
       <DependentUpon>FrmSettingSystem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\GridView.resx">
+      <DependentUpon>GridView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">

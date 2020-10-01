@@ -61,6 +61,17 @@ namespace MinvoiceLoadDataMisa.Services
                     Properties.Settings.Default.RefInventoryItem = value; break;
                 case "RefUnit":
                     Properties.Settings.Default.RefUnit = value; break;
+                case "InvoiceCodeId2":
+                    Properties.Settings.Default.InvoiceCodeId2 = value; break;
+                case "_kyHieu":
+                    Properties.Settings.Default._kyHieu = value; break;
+
+                case "Editmode":
+                    Properties.Settings.Default.Editmode = value; break;
+
+                case "connectLog":
+                    Properties.Settings.Default.connectLog = value; break;
+
             }
 
             Properties.Settings.Default.Save();

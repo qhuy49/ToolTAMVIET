@@ -5,6 +5,8 @@ using System.Windows.Forms;
 using MinvoiceLoadDataMisa.Config;
 using MinvoiceLoadDataMisa.Forms;
 using MinvoiceLoadDataMisa.Services;
+using System.Data.SqlClient;
+using System.Data;
 
 namespace MinvoiceLoadDataMisa
 {
@@ -203,6 +205,31 @@ namespace MinvoiceLoadDataMisa
         {
             backgroundWorker1.CancelAsync();
             _bw.RunWorkerAsync();
+
+            SqlConnection _connect =  new SqlConnection(Properties.Settings.Default.connectLog);
+            if(_connect.State == ConnectionState.Closed)
+            {
+                _connect.Open();
+            }
+
+            DataTable table = new DataTable();
+            string commandText = $@"SELECT ID from dbo.SaveLogs ";
+            SqlDataAdapter adapter = new SqlDataAdapter(commandText, _connect);
+            adapter.Fill(table);
+
+            if(table.Rows.Count > 500)
+            {
+                string _delete = $@" DELETE dbo.SaveLogs ";
+                SqlCommand Delete = new SqlCommand(_delete, _connect);
+                Delete.ExecuteNonQuery();
+            }
+            _connect.Close();
+
+        }
+
+        private void btnFix_Click(object sender, EventArgs e)
+        {
+            FrmLogin frm = new FrmLogin(); frm.ShowDialog();
         }
     }
 }

@@ -58,12 +58,16 @@ namespace MinvoiceLoadDataMisa.Forms
         private void Save()
         {
             string id = "";
-            var mauHoaDon2 = slokMauHoaDon1.GetSelectedDataRow();
-            if (mauHoaDon2 != null)
+            string _kyHieu = "";
+            var mauHoaDon = slokMauHoaDon1.GetSelectedDataRow();
+            if (mauHoaDon != null)
             {
-                id = ((MauHoaDon)mauHoaDon2).Id.ToString();
+                id = ((MauHoaDon)mauHoaDon).Id.ToString();
+                _kyHieu = ((MauHoaDon)mauHoaDon).KyHieu.ToString();
+
             }
             CommonService.UpdateSettingAppConfig(CommonConstants.InvoiceCodeId2, id);
+            CommonService.UpdateSettingAppConfig(CommonConstants._kyHieu, _kyHieu);
         }
 
         private void chkAll_CheckedChanged(object sender, EventArgs e)
@@ -82,10 +86,12 @@ namespace MinvoiceLoadDataMisa.Forms
         private void btnGetData_Click(object sender, EventArgs e)
         {
             string id = "";
+            CommonService.UpdateSettingAppConfig(CommonConstants.Editmode, "2");
             var mauHoaDon = slokMauHoaDon1.GetSelectedDataRow();
             if (mauHoaDon != null)
             {
                 id = ((MauHoaDon)mauHoaDon).Id.ToString();
+                txt_kyHieu.Text = ((MauHoaDon)mauHoaDon).KyHieu.ToString();
             }
 
             var tuNgay = !string.IsNullOrEmpty(dteTuNgay.Text) ? dteTuNgay.DateTime.ToString("yyyy-MM-dd") : DateTime.Now.ToString("yyyy-MM-dd");
@@ -110,8 +116,8 @@ namespace MinvoiceLoadDataMisa.Forms
                 slokMauHoaDon1.Properties.DataSource = mauHoaDons;
                 slokMauHoaDon1.Properties.DisplayMember = "MauSo";
                 slokMauHoaDon1.Properties.ValueMember = "Id";
-                
 
+                
             }
             catch (Exception ex)
             {
