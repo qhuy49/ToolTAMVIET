@@ -8,6 +8,6 @@
         public bool Selected { get; set; }
         public string Value { get; set; }
         public string InvInvoiceAuthId { get; set; }
-
+        public string key_api { get; set; }
     }
 }

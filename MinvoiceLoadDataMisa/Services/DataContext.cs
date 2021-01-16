@@ -20,20 +20,20 @@ namespace MinvoiceLoadDataMisa.Services
             SqlConnection sqlConnection = new SqlConnection(connectionString);
             return sqlConnection;
         }
-        public static DataTable GetDataTableTest(SqlConnection sqlConnection, string tableName, string where = "")
+        public static DataTable GetDataTableTest(SqlConnection sqlConnection, string tableName,string tableBANGKE, string tableDMDTCN,string where = "")        
         {
             DataTable dataTable = new DataTable();
             try
             {
-                string commandText = $"SELECT * FROM {tableName} {where}";
-                if (BaseConfig.Version.Equals("2017"))
-                {
-                    commandText =
-                        $"IF EXISTS(SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'AccountObject') " +
-                        $"SELECT {tableName}.*, AccountObject.EmailAddress FROM {tableName} LEFT JOIN AccountObject ON {tableName}.AccountObjectID = AccountObject.AccountObjectID {where} " +
-                        $"ELSE SELECT * FROM {tableName} {where}";
+                string commandText = $"SELECT {tableName}.*, {tableBANGKE}.*, {tableDMDTCN}.Email, {tableDMDTCN}.DienThoai FROM {tableName} LEFT JOIN {tableBANGKE} ON {tableName}.SoPhieu = {tableBANGKE}.SoPhieu LEFT JOIN {tableDMDTCN} ON {tableDMDTCN}.ID = {tableName}.DoiTuongCongNoID {where}";
+                //if (BaseConfig.Version.Equals("2017"))
+                //{
+                //    commandText =
+                //        //$"IF EXISTS(SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'AccountObject') " +
+                //        $"SELECT {tableName}.*, PS_BangkeGTGT.NgayPH,  PS_BangkeGTGT.VAT, PS_BangkeGTGT.DoanhSo,PS_BangkeGTGT.TienThue  FROM {tableName} LEFT JOIN {tableBANGKE} ON {tableName}.SoPhieu = {tableBANGKE}.SoPhieu LEFT JOIN {tableDMDTCN} ON {tableDMDTCN}.ID = {tableName}.DoiTuongCongNoID {where} AND {tableBANGKE}.DauVao={DauVao} ORDER BY InvDate, InvNo ASC " +
+                //        $"ELSE SELECT * FROM {tableName} {where}";
 
-                }
+                //}
                 SqlDataAdapter adapter = new SqlDataAdapter(commandText, sqlConnection);
                 adapter.Fill(dataTable);
                 return dataTable;
@@ -44,15 +44,15 @@ namespace MinvoiceLoadDataMisa.Services
             }
         }
 
-        public static void UpdateMisa(SqlConnection sqlConnection, string refId, string tableName, JToken jObject)
+        public static void UpdateMisa(SqlConnection sqlConnection, string SoPhieu, string tableName, JToken jObject)
         {
             try
             {
-                string update2012 = $"UPDATE {tableName} SET InvSeries = '{jObject["inv_invoiceSeries"]}', IsInvoice = 1 WHERE RefID = '{refId}'";
+                string commandText = $"UPDATE {tableName} SET VAT_Seri = '{jObject[0]["inv_invoiceSeries"].ToString().Trim()}', IsInvoice = 1 WHERE SoPhieu = '{SoPhieu}'";
 
-                string update2017 = $"UPDATE {tableName} SET InvTemplateNo = '{jObject["mau_hd"]}', InvSeries = '{jObject["inv_invoiceSeries"]}', IsInvoice = 1 WHERE RefID = '{refId}'";
+                //string update2017 = $"UPDATE {tableName} SET InvTemplateNo = '{jObject["mau_hd"]}', InvSeries = '{jObject["inv_invoiceSeries"]}', IsInvoice = 1 WHERE RefID = '{refId}'";
 
-                string commandText = BaseConfig.Version.Equals("2012") ? update2012 : update2017;
+                //string commandText = BaseConfig.Version.Equals("2012") ? update2012 : update2017;
                 Log.Debug(commandText);
                 SqlCommand sqlCommand = new SqlCommand(commandText, sqlConnection)
                 {

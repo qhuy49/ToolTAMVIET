@@ -64,28 +64,30 @@
             // 
             // contextMenuStrip1
             // 
+            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.lấyDữLiệuNgayToolStripMenuItem,
             this.thoátToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(161, 48);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(187, 52);
             // 
             // lấyDữLiệuNgayToolStripMenuItem
             // 
             this.lấyDữLiệuNgayToolStripMenuItem.Name = "lấyDữLiệuNgayToolStripMenuItem";
-            this.lấyDữLiệuNgayToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.lấyDữLiệuNgayToolStripMenuItem.Size = new System.Drawing.Size(186, 24);
             this.lấyDữLiệuNgayToolStripMenuItem.Text = "Lấy dữ liệu ngay";
             this.lấyDữLiệuNgayToolStripMenuItem.Click += new System.EventHandler(this.lấyDữLiệuNgayToolStripMenuItem_Click);
             // 
             // thoátToolStripMenuItem
             // 
             this.thoátToolStripMenuItem.Name = "thoátToolStripMenuItem";
-            this.thoátToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.thoátToolStripMenuItem.Size = new System.Drawing.Size(186, 24);
             this.thoátToolStripMenuItem.Text = "Thoát";
             this.thoátToolStripMenuItem.Click += new System.EventHandler(this.thoátToolStripMenuItem_Click);
             // 
             // popupMenu1
             // 
+            this.popupMenu1.Manager = null;
             this.popupMenu1.Name = "popupMenu1";
             // 
             // timer1
@@ -97,9 +99,10 @@
             // 
             this.labelControl3.Appearance.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelControl3.Appearance.ForeColor = System.Drawing.Color.Red;
-            this.labelControl3.Location = new System.Drawing.Point(5, 168);
+            this.labelControl3.Location = new System.Drawing.Point(6, 207);
+            this.labelControl3.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.labelControl3.Name = "labelControl3";
-            this.labelControl3.Size = new System.Drawing.Size(235, 19);
+            this.labelControl3.Size = new System.Drawing.Size(297, 23);
             this.labelControl3.TabIndex = 28;
             this.labelControl3.Text = "Tổng đài hỗ trợ 24/7: 0901 80 16 18";
             // 
@@ -107,11 +110,12 @@
             // 
             this.labelControl1.Appearance.Font = new System.Drawing.Font("Times New Roman", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelControl1.Appearance.ForeColor = System.Drawing.Color.Red;
-            this.labelControl1.Location = new System.Drawing.Point(5, 193);
+            this.labelControl1.Location = new System.Drawing.Point(6, 238);
+            this.labelControl1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.labelControl1.Name = "labelControl1";
-            this.labelControl1.Size = new System.Drawing.Size(186, 32);
+            this.labelControl1.Size = new System.Drawing.Size(230, 38);
             this.labelControl1.TabIndex = 26;
-            this.labelControl1.Text = "                   Copyright © M-Invoice      \r\nUpdate : 30 - 09 - 2020";
+            this.labelControl1.Text = "                   Copyright © M-Invoice      \r\nUpdate : 16 - 01 - 2021";
             // 
             // backgroundWorker1
             // 
@@ -127,9 +131,10 @@
             this.btnSetupDatabase.Appearance.Options.UseFont = true;
             this.btnSetupDatabase.Image = ((System.Drawing.Image)(resources.GetObject("btnSetupDatabase.Image")));
             this.btnSetupDatabase.ImageLocation = DevExpress.XtraEditors.ImageLocation.TopCenter;
-            this.btnSetupDatabase.Location = new System.Drawing.Point(298, 183);
+            this.btnSetupDatabase.Location = new System.Drawing.Point(348, 225);
+            this.btnSetupDatabase.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnSetupDatabase.Name = "btnSetupDatabase";
-            this.btnSetupDatabase.Size = new System.Drawing.Size(43, 40);
+            this.btnSetupDatabase.Size = new System.Drawing.Size(50, 49);
             this.btnSetupDatabase.TabIndex = 29;
             this.btnSetupDatabase.Click += new System.EventHandler(this.btnSetupDatabase_Click);
             // 
@@ -139,9 +144,10 @@
             this.btnGetInvoiceByDate.Appearance.Options.UseFont = true;
             this.btnGetInvoiceByDate.Image = ((System.Drawing.Image)(resources.GetObject("btnGetInvoiceByDate.Image")));
             this.btnGetInvoiceByDate.ImageLocation = DevExpress.XtraEditors.ImageLocation.TopCenter;
-            this.btnGetInvoiceByDate.Location = new System.Drawing.Point(5, 100);
+            this.btnGetInvoiceByDate.Location = new System.Drawing.Point(6, 123);
+            this.btnGetInvoiceByDate.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnGetInvoiceByDate.Name = "btnGetInvoiceByDate";
-            this.btnGetInvoiceByDate.Size = new System.Drawing.Size(133, 62);
+            this.btnGetInvoiceByDate.Size = new System.Drawing.Size(155, 76);
             this.btnGetInvoiceByDate.TabIndex = 33;
             this.btnGetInvoiceByDate.Text = "Load Invoice";
             this.btnGetInvoiceByDate.Click += new System.EventHandler(this.btnGetInvoiceByDate_Click_1);
@@ -152,9 +158,10 @@
             this.btnUpdate.Appearance.Options.UseFont = true;
             this.btnUpdate.Image = ((System.Drawing.Image)(resources.GetObject("btnUpdate.Image")));
             this.btnUpdate.ImageLocation = DevExpress.XtraEditors.ImageLocation.TopCenter;
-            this.btnUpdate.Location = new System.Drawing.Point(151, 100);
+            this.btnUpdate.Location = new System.Drawing.Point(176, 123);
+            this.btnUpdate.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnUpdate.Name = "btnUpdate";
-            this.btnUpdate.Size = new System.Drawing.Size(107, 62);
+            this.btnUpdate.Size = new System.Drawing.Size(125, 76);
             this.btnUpdate.TabIndex = 31;
             this.btnUpdate.Text = "Update Invoice";
             this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
@@ -165,9 +172,10 @@
             this.btnSettingSystem.Appearance.Options.UseFont = true;
             this.btnSettingSystem.Image = ((System.Drawing.Image)(resources.GetObject("btnSettingSystem.Image")));
             this.btnSettingSystem.ImageLocation = DevExpress.XtraEditors.ImageLocation.TopCenter;
-            this.btnSettingSystem.Location = new System.Drawing.Point(348, 183);
+            this.btnSettingSystem.Location = new System.Drawing.Point(406, 225);
+            this.btnSettingSystem.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnSettingSystem.Name = "btnSettingSystem";
-            this.btnSettingSystem.Size = new System.Drawing.Size(41, 40);
+            this.btnSettingSystem.Size = new System.Drawing.Size(48, 49);
             this.btnSettingSystem.TabIndex = 30;
             this.btnSettingSystem.Click += new System.EventHandler(this.btnSettingSystem_Click);
             // 
@@ -177,9 +185,10 @@
             this.btnStop.Appearance.Options.UseFont = true;
             this.btnStop.Image = ((System.Drawing.Image)(resources.GetObject("btnStop.Image")));
             this.btnStop.ImageLocation = DevExpress.XtraEditors.ImageLocation.TopCenter;
-            this.btnStop.Location = new System.Drawing.Point(275, 100);
+            this.btnStop.Location = new System.Drawing.Point(321, 123);
+            this.btnStop.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnStop.Name = "btnStop";
-            this.btnStop.Size = new System.Drawing.Size(114, 62);
+            this.btnStop.Size = new System.Drawing.Size(133, 76);
             this.btnStop.TabIndex = 25;
             this.btnStop.Text = "Dừng";
             this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
@@ -189,8 +198,9 @@
             this.panelControl1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.panelControl1.ContentImage = global::MinvoiceLoadDataMisa.Properties.Resources.LogoAppMinvoice;
             this.panelControl1.Location = new System.Drawing.Point(2, 1);
+            this.panelControl1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.panelControl1.Name = "panelControl1";
-            this.panelControl1.Size = new System.Drawing.Size(390, 93);
+            this.panelControl1.Size = new System.Drawing.Size(455, 114);
             this.panelControl1.TabIndex = 23;
             this.panelControl1.UseDisabledStatePainter = false;
             // 
@@ -198,11 +208,12 @@
             // 
             this.labelControl4.Appearance.Font = new System.Drawing.Font("Times New Roman", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelControl4.Appearance.ForeColor = System.Drawing.Color.Red;
-            this.labelControl4.Location = new System.Drawing.Point(137, 208);
+            this.labelControl4.Location = new System.Drawing.Point(160, 256);
+            this.labelControl4.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.labelControl4.Name = "labelControl4";
-            this.labelControl4.Size = new System.Drawing.Size(108, 17);
+            this.labelControl4.Size = new System.Drawing.Size(133, 22);
             this.labelControl4.TabIndex = 35;
-            this.labelControl4.Text = "Version : 2.0.0.1";
+            this.labelControl4.Text = "Version : 1.0.0.0";
             // 
             // btnFix
             // 
@@ -210,18 +221,19 @@
             this.btnFix.Appearance.Options.UseFont = true;
             this.btnFix.Image = ((System.Drawing.Image)(resources.GetObject("btnFix.Image")));
             this.btnFix.ImageLocation = DevExpress.XtraEditors.ImageLocation.TopCenter;
-            this.btnFix.Location = new System.Drawing.Point(249, 183);
+            this.btnFix.Location = new System.Drawing.Point(290, 225);
+            this.btnFix.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnFix.Name = "btnFix";
-            this.btnFix.Size = new System.Drawing.Size(43, 40);
+            this.btnFix.Size = new System.Drawing.Size(50, 49);
             this.btnFix.TabIndex = 36;
             this.btnFix.Click += new System.EventHandler(this.btnFix_Click);
             // 
             // XtraForm1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(393, 229);
+            this.ClientSize = new System.Drawing.Size(458, 282);
             this.Controls.Add(this.btnFix);
             this.Controls.Add(this.labelControl4);
             this.Controls.Add(this.btnSetupDatabase);
@@ -234,6 +246,7 @@
             this.Controls.Add(this.panelControl1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.LookAndFeel.SkinName = "Office 2013";
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.MaximizeBox = false;
             this.Name = "XtraForm1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

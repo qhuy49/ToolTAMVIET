@@ -7,7 +7,7 @@
 
         public static string TableInvoiceDetail = "TableInvoiceDetail";
 
-        public static string TableVoucherDetail = "TableVoucherDetail";
+        public static string DauVao = "DauVao";
 
         public static string UsernameLoginWeb = "UsernameLoginWeb";
 
@@ -35,7 +35,7 @@
 
         public static string InvoiceCodeId2 = "InvoiceCodeId2";
 
-        public static string TableVoucher = "TableVoucher";
+        public static string TableDM_DTCN = "TableDM_DTCN";
 
         public static string Command = "Command";
 
@@ -43,9 +43,9 @@
 
         public static string Version = "Version";
 
-        public static string TableInventoryItem = "TableInventoryItem";
+        public static string TablePS_BangKeGTGT = "TablePS_BangKeGTGT";
 
-        public static string TableUnit = "TableUnit";
+        public static string CmCheck = "CmCheck";
 
         public static string RefInventoryItem = "RefInventoryItem";
 
@@ -55,10 +55,10 @@
 
         public static string SqlSelectSaInvoice = $"SELECT * FROM {BaseConfig.TableInvocie} WHERE InvSeries = '{BaseConfig.KyHieu}' AND IsInvoice IS NULL ORDER BY InvDate, InvNo ASC";
 
-        public static string SqlSelectSaInvoiceDetail2012 = $"SELECT a.*, b.InventoryItemCode FROM {BaseConfig.TableInvoiceDetail} AS a LEFT JOIN {BaseConfig.TableInventoryItem} AS b ON b.{BaseConfig.RefInventoryItem} = a.{BaseConfig.RefInventoryItem} ";
+        //public static string SqlSelectSaInvoiceDetail2012 = $"SELECT a.*, b.InventoryItemCode FROM {BaseConfig.TableInvoiceDetail} AS a LEFT JOIN {BaseConfig.TableInventoryItem} AS b ON b.{BaseConfig.RefInventoryItem} = a.{BaseConfig.RefInventoryItem} ";
 
-        public static string SqlSelectSaInvoiceDetail2017 = $"SELECT a.*, b.InventoryItemCode, c.UnitName FROM {BaseConfig.TableInvoiceDetail} AS a LEFT JOIN {BaseConfig.TableInventoryItem} AS b ON b.{BaseConfig.RefInventoryItem} = a.{BaseConfig.RefInventoryItem} LEFT JOIN {BaseConfig.TableUnit} AS c ON c.{BaseConfig.RefUnit} = a.{BaseConfig.RefUnit} ";
+        public static string SqlSelectSaInvoiceDetail2017 = $"SELECT * FROM {BaseConfig.TableInvoiceDetail} ";
 
-        public static string SqlSelectSaVoucherDetail2017 = $"SELECT a.*, b.InventoryItemCode, c.UnitName FROM {BaseConfig.TableVoucherDetail} AS a LEFT JOIN {BaseConfig.TableInventoryItem} AS b ON b.{BaseConfig.RefInventoryItem} = a.{BaseConfig.RefInventoryItem} LEFT JOIN {BaseConfig.TableUnit} AS c ON c.{BaseConfig.RefUnit} = a.{BaseConfig.RefUnit} ";
+        //public static string SqlSelectSaVoucherDetail2017 = $"SELECT a.*, b.InventoryItemCode, c.UnitName FROM {BaseConfig.TableVoucherDetail} AS a LEFT JOIN {BaseConfig.TableInventoryItem} AS b ON b.{BaseConfig.RefInventoryItem} = a.{BaseConfig.RefInventoryItem} LEFT JOIN {BaseConfig.TableUnit} AS c ON c.{BaseConfig.RefUnit} = a.{BaseConfig.RefUnit} ";
     }
 }

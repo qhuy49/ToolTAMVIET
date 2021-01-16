@@ -20,8 +20,8 @@ namespace MinvoiceLoadDataMisa.Services
                     Properties.Settings.Default.TableInvocie = value; break;
                 case "TableInvoiceDetail":
                     Properties.Settings.Default.TableInvoiceDetail = value; break;
-                case "TableVoucherDetail":
-                    Properties.Settings.Default.TableVoucherDetail = value; break;
+                case "DauVao":
+                    Properties.Settings.Default.DauVao = value; break;
                 case "ConnectionString":
                     Properties.Settings.Default.ConnectionString = value; break;
                 case "UsernameLoginWeb":
@@ -44,8 +44,8 @@ namespace MinvoiceLoadDataMisa.Services
                     Properties.Settings.Default.UrlRef = value; break;
                 case "InvoiceCodeId":
                     Properties.Settings.Default.InvoiceCodeId = value; break;
-                case "TableVoucher":
-                    Properties.Settings.Default.TableVoucher = value; break;
+                case "TableDM_DTCN":
+                    Properties.Settings.Default.TableDM_DTCN = value; break;
                 case "Command":
                     Properties.Settings.Default.Command = value; break;
                 case "UrlCommand":
@@ -53,10 +53,10 @@ namespace MinvoiceLoadDataMisa.Services
                 case "Version":
                     Properties.Settings.Default.Version = value; break;
 
-                case "TableInventoryItem":
-                    Properties.Settings.Default.TableInventoryItem = value; break;
-                case "TableUnit":
-                    Properties.Settings.Default.TableUnit = value; break;
+                case "TablePS_BangKeGTGT":
+                    Properties.Settings.Default.TablePS_BangKeGTGT = value; break;
+                case "CmCheck":
+                    Properties.Settings.Default.CmCheck = value; break;
                 case "RefInventoryItem":
                     Properties.Settings.Default.RefInventoryItem = value; break;
                 case "RefUnit":
@@ -146,7 +146,8 @@ namespace MinvoiceLoadDataMisa.Services
                             KyHieu = jToken["inv_invoiceSeries"].ToString(),
                             MauSo = jToken["mau_hd"].ToString(),
                             Selected = false,
-                            InvInvoiceAuthId = jToken["inv_InvoiceAuth_id"].ToString()
+                            InvInvoiceAuthId = jToken["inv_InvoiceAuth_id"].ToString(),
+                            key_api = jToken["key_api"].ToString()
                         };
                         invoiceObject.Value =
                             $"{invoiceObject.MauSo} - {invoiceObject.KyHieu} - {invoiceObject.InvoiceNumber}  ";

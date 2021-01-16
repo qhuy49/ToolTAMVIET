@@ -46,18 +46,30 @@ namespace MinvoiceLoadDataMisa.Services
         {
             try
             {
+                CommonService.UpdateSettingAppConfig(CommonConstants.Editmode, "1");
+                var ConnectLog = $@"{Properties.Settings.Default.connectLog}";
+                SqlConnection _connLog = new SqlConnection(ConnectLog);
+                if (_connLog.State == ConnectionState.Closed)
+                {
+                    _connLog.Open();
+                }
+                Log.Debug($"CheckConnectLog - ConnectString: {ConnectLog}");
                 var sqlConnectionMisa = GetSqlConnectionMisaTest();
                 sqlConnectionMisa.Open();
-                var where = $"WHERE InvSeries = '{BaseConfig.KyHieu}' AND (CONVERT(DATE, InvDate) = '{DateTime.Now:yyyy-MM-dd}') ORDER BY InvDate, InvNo ASC";
-                var dataTableInvoice = DataContext.GetDataTableTest(sqlConnectionMisa, BaseConfig.TableInvocie, where);
+                var where = $"WHERE Isinvoice is null AND VAT_Seri = '{Properties.Settings.Default.KyHieu}' AND {BaseConfig.TablePS_BangKeGTGT}.DauVao={BaseConfig.DauVao} AND {BaseConfig.TableInvocie}.ChungTuID in ('HDBH','HDDV') ORDER BY {BaseConfig.TablePS_BangKeGTGT}.NgayPH, {BaseConfig.TableInvocie}.VAT_So ASC";/*AND (CONVERT(DATE, {BaseConfig.TablePS_BangKeGTGT}.NgayPH) ='{DateTime.Now:yyyy-MM-dd}') */
+                //var where = $"WHERE InvSeries = '{BaseConfig.KyHieu}' AND (CONVERT(DATE, InvDate) = '{DateTime.Now:yyyy-MM-dd}') ORDER BY InvDate, InvNo ASC";
+                var dataTableInvoice = DataContext.GetDataTableTest(sqlConnectionMisa, BaseConfig.TableInvocie, BaseConfig.TablePS_BangKeGTGT, BaseConfig.TableDM_DTCN, where);
                 if (dataTableInvoice.Rows.Count > 0)
                 {
                     foreach (DataRow row in dataTableInvoice.Rows)
                     {
-                        var refId = row["RefID"].ToString();
-                        if (!CheckInvoiceInMinvoice(refId, sqlConnectionMisa))
+                        var SoPhieu = row["SoPhieu"].ToString();
+                         
+                        if (!CheckInvoiceInMinvoice(SoPhieu, sqlConnectionMisa, Properties.Settings.Default.KyHieu))
                         {
-                            var jObjectData = JsonConvert.ConvertData(sqlConnectionMisa, row);
+                            var inv_invoiceauth_id = "";
+                            var invNo="";
+                            var jObjectData = JsonConvert.ConvertData(sqlConnectionMisa, row, inv_invoiceauth_id.ToString(), invNo.ToString());
                             var jArrayData = new JArray { jObjectData };
                             var jObjectMainData = new JObject
                             {
@@ -78,7 +90,53 @@ namespace MinvoiceLoadDataMisa.Services
                                     var resultResponse = JObject.Parse(result);
                                     if (resultResponse.ContainsKey("ok") && resultResponse.ContainsKey("data"))
                                     {
-                                        scope.Complete();
+                                        var _numMisa = row["VAT_So"].ToString();
+                                        var _AuthID = resultResponse["data"]["inv_InvoiceAuth_id"].ToString();
+                                        var _Type = resultResponse["data"]["inv_invoiceType"].ToString();
+                                        var _seri = resultResponse["data"]["inv_invoiceSeries"].ToString();
+                                        var _numberinvoice = resultResponse["data"]["inv_invoiceNumber"].ToString();
+                                        if (sqlConnectionMisa.State == ConnectionState.Closed)
+                                        {
+
+                                            sqlConnectionMisa = GetSqlConnectionMisaTest();
+                                            sqlConnectionMisa.Open();
+
+                                        }
+
+                                        // Ghi vào Database Log
+                                        if (CheckDBLog() == true)
+                                        {
+                                            string InserLog = $@"Insert into SaveLogs ([ID],[NumberMisa],[NumberMinvoice],[TimeAdd],[JsonConvert],[Editmode],[Inv_invoiceAuth_ID],[RefID],[Type], [Seri], [result]) " +
+                                                $@" VALUES (NEWID(), '{_numMisa}' ,{_numberinvoice} ,GETDATE(), N'{jArrayData}', N'{Properties.Settings.Default.Editmode}',N'{_AuthID}' ,N'{SoPhieu}',N'{_Type}', N'{_seri}',N'Tạo thành công')";
+                                            SqlCommand _Insert = new SqlCommand(InserLog, _connLog);
+                                            _Insert.ExecuteNonQuery();
+
+                                            // Update IsInvoice vào Database Misa
+                                            string commandText = $"Update {BaseConfig.TableInvocie} SET IsInvoice = 1 where SoPhieu='{SoPhieu}'";
+                                            SqlCommand command = new SqlCommand(commandText, sqlConnectionMisa);
+                                            command.ExecuteNonQuery();
+                                            scope.Complete();
+                                        }
+                                        else
+                                        {
+                                            // Update IsInvoice vào Database Misa
+                                            string commandText = $"Update {BaseConfig.TableInvocie} SET IsInvoice = 1 where SoPhieu='{SoPhieu}'";
+                                            SqlCommand command = new SqlCommand(commandText, sqlConnectionMisa);
+                                            command.ExecuteNonQuery();
+                                            scope.Complete();
+                                        }
+                                    }
+                                    if (resultResponse.ContainsKey("error"))
+                                    {
+                                        if (CheckDBLog() == true)
+                                        {
+                                            string InserLog = $@"Insert into SaveLogs ([ID],[NumberMisa],[NumberMinvoice],[TimeAdd],[JsonConvert],[Editmode],[Inv_invoiceAuth_ID],[RefID],[Type], [Seri], [result]) " +
+                                        $@" VALUES (NEWID(), N'{row["VAT_So"].ToString()}', N'',GETDATE(), N'{jArrayData}', N'{Properties.Settings.Default.Editmode}',N'' ,N'{SoPhieu}',N'{resultResponse["error"]}', N'{jObjectData["inv_invoiceSeries"]}',N'Tạo hóa đơn thất bại')";
+                                            SqlCommand _Insert = new SqlCommand(InserLog, _connLog);
+                                            _Insert.ExecuteNonQuery();
+
+                                        }
+
                                     }
                                 }
                                 catch (Exception ex)
@@ -100,18 +158,41 @@ namespace MinvoiceLoadDataMisa.Services
                 XtraMessageBox.Show(e.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        public static bool CheckInvoiceInMinvoice(string invoiceAuthId, SqlConnection sqlConnection)
+        public static bool CheckInvoiceInMinvoice(string SoPhieu, SqlConnection sqlConnection, string kyhieu)
         {
             var webClient = SetupWebClient();
-            var url = BaseConfig.UrlGetInvoiceByInvoiceAuthId + invoiceAuthId;
-            var result = webClient.DownloadString(url);
-            JObject jObject = JObject.Parse(result);
-            if (jObject.ContainsKey("inv_InvoiceAuth_id"))
+            var url = BaseConfig.UrlCommand ;
+
+            var CmCheck = BaseConfig.CmCheck;
+            var json = "{\"command\":\"" + CmCheck + "\" , parameter:{\"key_api\":\"" + SoPhieu + "\" , \"inv_invoiceSeries\":\"" + kyhieu.Trim() + "\"}}";
+
+            var result = webClient.UploadString(url, json);
+            // if (result == "null" || result == "[]")
+
+            //      result = "{\"abc\":\"4y114\"}";
+            //var jObject1 = result.Replace("[","{").Replace("]","}");
+            var jObject = JArray.Parse(result);
+            foreach (var jtoken in jObject)
             {
-                DataContext.UpdateMisa(sqlConnection, invoiceAuthId, BaseConfig.TableInvocie, jObject);
-                return true;
+                if (jtoken["key_api"].ToString() != "")
+                {
+                    DataContext.UpdateMisa(sqlConnection, SoPhieu, BaseConfig.TableInvocie, jObject);
+                    //ck = true;
+                   
+                    return true;
+                }
+
             }
             return false;
+
+            //var result = webClient.DownloadString(url);
+            //JObject jObject = JObject.Parse(result);
+            //if (jObject.ContainsKey("inv_InvoiceAuth_id"))
+            //{
+            //    DataContext.UpdateMisa(sqlConnection, invoiceAuthId, BaseConfig.TableInvocie, jObject);
+            //    return true;
+            //}
+            //return false;
         }
 
         public static void UpdateInvoice(string invoiceNumber, string Inv_InvoiceCode_id)
@@ -121,15 +202,16 @@ namespace MinvoiceLoadDataMisa.Services
                 var sqlConnectionMisa = GetSqlConnectionMisaTest();
                 sqlConnectionMisa.Open();
                 var where = $"WHERE InvNo IN ({invoiceNumber}) AND inv_invoiceCode_id = {Inv_InvoiceCode_id}";
-                var dataTableInvoice = DataContext.GetDataTableTest(sqlConnectionMisa, BaseConfig.TableInvocie, where);
+                var dataTableInvoice = DataContext.GetDataTableTest(sqlConnectionMisa, BaseConfig.TableInvocie, BaseConfig.TablePS_BangKeGTGT, BaseConfig.TableDM_DTCN, where);
                 if (dataTableInvoice.Rows.Count > 0)
                 {
                     foreach (DataRow row in dataTableInvoice.Rows)
                     {
                         var refId = row["RefID"].ToString();
                         var invNo = row["InvNo"].ToString();
-
-                        var jObjectData = JsonConvert.ConvertData(sqlConnectionMisa, row);
+                        var inv_invoiceauth_id = "";
+                        //var invNo = "";
+                        var jObjectData = JsonConvert.ConvertData(sqlConnectionMisa, row,inv_invoiceauth_id.ToString(), invNo.ToString());
                         var jArrayData = new JArray { jObjectData };
                         var jObjectMainData = new JObject
                             {
@@ -151,10 +233,10 @@ namespace MinvoiceLoadDataMisa.Services
                                 {
                                     var jToken = resultResponse["data"];
                                     DataContext.UpdateMisa(sqlConnectionMisa, refId, BaseConfig.TableInvocie, jToken);
-                                    if (BaseConfig.Version == "2017")
-                                    {
-                                        DataContext.UpdateMisaVoucher(sqlConnectionMisa, refId, BaseConfig.TableVoucher, BaseConfig.TableVoucherDetail, jToken);
-                                    }
+                                    //if (BaseConfig.Version == "2017")
+                                    //{
+                                    //    DataContext.UpdateMisaVoucher(sqlConnectionMisa, refId, BaseConfig.TableVoucher, BaseConfig.TableVoucherDetail, jToken);
+                                    //}
                                     scope.Complete();
                                     XtraMessageBox.Show($"Cập nhật hóa đơn {invNo} thành công", "Thông Báo", MessageBoxButtons.OK,
                                         MessageBoxIcon.Information);
@@ -179,15 +261,15 @@ namespace MinvoiceLoadDataMisa.Services
         {
             try
             {
-                string invInvoiceAuthId = "";
+                string SoPhieu = "";
                 foreach (var invoiceObject in invoiceObjects)
                 {
-                    invInvoiceAuthId += $"'{invoiceObject.InvInvoiceAuthId}' ,";
+                    SoPhieu += $"'{invoiceObject.key_api}' ,";
                 }
 
-             
 
-                invInvoiceAuthId = invInvoiceAuthId.Substring(0, invInvoiceAuthId.Length - 1);
+
+                SoPhieu = SoPhieu.Substring(0, SoPhieu.Length - 1);
                 var sqlConnectionMisa = GetSqlConnectionMisaTest();
                 sqlConnectionMisa.Open();
                 var ConnectLog = $@"{Properties.Settings.Default.connectLog}";
@@ -196,22 +278,22 @@ namespace MinvoiceLoadDataMisa.Services
                 {
                     _connLog.Open();
                 }
-                Log.Debug($"UpdateInvoice - invInvoiceAuthId: {invInvoiceAuthId}");
-                var where = $"WHERE RefID IN ({invInvoiceAuthId})";
-                var dataTableInvoice = DataContext.GetDataTableTest(sqlConnectionMisa, BaseConfig.TableInvocie, where);
+                Log.Debug($"UpdateInvoice - SoPhieu: {SoPhieu}");
+                var where = $"WHERE {BaseConfig.TableInvocie}.SoPhieu IN ({SoPhieu})";
+                var dataTableInvoice = DataContext.GetDataTableTest(sqlConnectionMisa, BaseConfig.TableInvocie, BaseConfig.TablePS_BangKeGTGT, BaseConfig.TableDM_DTCN, where);
                 var _id = BaseConfig.IDUpdate;
                 if (dataTableInvoice.Rows.Count > 0)
                 {
                     foreach (DataRow row in dataTableInvoice.Rows)
                     {
-                        var refId = row["RefID"].ToString();
+                        var key_api = row["SoPhieu"].ToString();
 
-                        var invoiceObject = invoiceObjects.Single(x => x.InvInvoiceAuthId == refId);
-                        row["InvNo"] = invoiceObject.InvoiceNumber;
+                        var invoiceObject = invoiceObjects.Single(x => x.key_api == key_api);
+                        var inv_invoiceauth_id = invoiceObject.InvInvoiceAuthId;
                         
                         var invNo = invoiceObject.InvoiceNumber;
                         
-                        var jObjectData = JsonConvert.ConvertData(sqlConnectionMisa, row);
+                        var jObjectData = JsonConvert.ConvertData(sqlConnectionMisa, row, inv_invoiceauth_id.ToString(), invNo.ToString());
                         var jArrayData = new JArray { jObjectData };
                         var jObjectMainData = new JObject
                             {
@@ -238,7 +320,7 @@ namespace MinvoiceLoadDataMisa.Services
                                     if (CheckDBLog() == true)
                                     {
                                         string InserLog = $@"Insert into SaveLogs ([ID],[NumberMisa],[NumberMinvoice],[TimeAdd],[JsonConvert],[Editmode],[Inv_invoiceAuth_ID],[RefID],[Type], [Seri], [result]) " +
-                                    $@" VALUES (NEWID(), N'', N'',GETDATE(), N'{jArrayData}', N'{Properties.Settings.Default.Editmode}',N'' ,N'',N'', N'',N'Tạo thành công')";
+                                    $@" VALUES (NEWID(), N'{row["VAT_So"].ToString()}', N'{invNo.ToString()}',GETDATE(), N'{jArrayData}', N'{Properties.Settings.Default.Editmode}',N'{inv_invoiceauth_id.ToString()}' ,N'{key_api}',N'', N'{jObjectData["inv_invoiceSeries"]}',N'Cập nhật thành công')";
                                         SqlCommand _Insert = new SqlCommand(InserLog, _connLog);
                                         _Insert.ExecuteNonQuery();
                                         scope.Complete();
@@ -246,10 +328,23 @@ namespace MinvoiceLoadDataMisa.Services
                                     {
                                         scope.Complete();
                                     }
-                                        
+                                    XtraMessageBox.Show($"Cập nhật hóa đơn {invNo} thành công", "Thông Báo", MessageBoxButtons.OK,
+                            MessageBoxIcon.Information);
                                 }
-                                XtraMessageBox.Show($"Cập nhật hóa đơn {invNo} thành công", "Thông Báo", MessageBoxButtons.OK,
-                                MessageBoxIcon.Information);
+                                if(resultResponse.ContainsKey("error"))
+                                {
+                                    if (CheckDBLog() == true)
+                                    {
+                                        string InserLog = $@"Insert into SaveLogs ([ID],[NumberMisa],[NumberMinvoice],[TimeAdd],[JsonConvert],[Editmode],[Inv_invoiceAuth_ID],[RefID],[Type], [Seri], [result]) " +
+                                    $@" VALUES (NEWID(), N'{row["VAT_So"].ToString()}', N'{invNo.ToString()}',GETDATE(), N'{jArrayData}', N'{Properties.Settings.Default.Editmode}',N'{inv_invoiceauth_id.ToString()}' ,N'{key_api}',N'{resultResponse["error"]}', N'{jObjectData["inv_invoiceSeries"]}',N'Cập nhật thất bại')";
+                                        SqlCommand _Insert = new SqlCommand(InserLog, _connLog);
+                                        _Insert.ExecuteNonQuery();
+                                      
+                                    }
+                                    XtraMessageBox.Show($"Cập nhật hóa đơn {invNo} thất bại! \n {resultResponse["error"]}", "Lỗi", MessageBoxButtons.OK,
+                                     MessageBoxIcon.Error);
+                                }
+                            
                             }
                             catch (Exception ex)
                             {
@@ -279,18 +374,24 @@ namespace MinvoiceLoadDataMisa.Services
                 {
                     _connLog.Open();
                 }
+                Log.Debug($"CheckConnectLog - ConnectString: {ConnectLog}");
                 var sqlConnectionMisa = GetSqlConnectionMisaTest();
                 sqlConnectionMisa.Open();
-                var where = $"WHERE Isinvoice is null AND InvSeries = '{Properties.Settings.Default.KyHieu}' AND CONVERT(DATE, InvDate) between '{day}' and '{day1}' ORDER BY InvDate, InvNo ASC";
-                var dataTableInvoice = DataContext.GetDataTableTest(sqlConnectionMisa, BaseConfig.TableInvocie, where);
+                //var where = $"WHERE Isinvoice is null AND VAT_Seri = '{Properties.Settings.Default.KyHieu}' AND {BaseConfig.TablePS_BangKeGTGT}.DauVao={BaseConfig.DauVao} AND {BaseConfig.TableInvocie}.ChungTuID in ('HDBH','HDDV') ORDER BY {BaseConfig.TablePS_BangKeGTGT}.NgayPH, {BaseConfig.TableInvocie}.VAT_So ASC";/*AND (CONVERT(DATE, {BaseConfig.TablePS_BangKeGTGT}.NgayPH) ='{DateTime.Now:yyyy-MM-dd}') */
+                //var where = $"WHERE InvSeries = '{BaseConfig.KyHieu}' AND (CONVERT(DATE, InvDate) = '{DateTime.Now:yyyy-MM-dd}') ORDER BY InvDate, InvNo ASC";
+             
+                var where = $"WHERE Isinvoice is null AND VAT_Seri = '{Properties.Settings.Default.KyHieu}' AND {BaseConfig.TablePS_BangKeGTGT}.DauVao={BaseConfig.DauVao} AND {BaseConfig.TableInvocie}.ChungTuID in ('HDBH','HDDV') AND (CONVERT(DATE, {BaseConfig.TablePS_BangKeGTGT}.NgayPH) between '{day}' and '{day1}')  ORDER BY {BaseConfig.TablePS_BangKeGTGT}.NgayPH, {BaseConfig.TableInvocie}.VAT_So ASC";
+                var dataTableInvoice = DataContext.GetDataTableTest(sqlConnectionMisa, BaseConfig.TableInvocie, BaseConfig.TablePS_BangKeGTGT, BaseConfig.TableDM_DTCN, where);
                 if (dataTableInvoice.Rows.Count > 0)
                 {
                     foreach (DataRow row in dataTableInvoice.Rows)
                     {
-                        var refId = row["RefID"].ToString();
-                        if (!CheckInvoiceInMinvoice(refId, sqlConnectionMisa))
+                        var SoPhieu = row["SoPhieu"].ToString();
+                        if (!CheckInvoiceInMinvoice(SoPhieu, sqlConnectionMisa, Properties.Settings.Default.KyHieu))
                         {
-                            var jObjectData = JsonConvert.ConvertData(sqlConnectionMisa, row);
+                            var inv_invoiceauth_id = "";
+                            var invNo = "";
+                            var jObjectData = JsonConvert.ConvertData(sqlConnectionMisa, row, inv_invoiceauth_id.ToString(), invNo.ToString());
                             var jArrayData = new JArray { jObjectData };
                             var jObjectMainData = new JObject
                             {
@@ -311,7 +412,7 @@ namespace MinvoiceLoadDataMisa.Services
                                     var resultResponse = JObject.Parse(result);
                                     if (resultResponse.ContainsKey("ok") && resultResponse.ContainsKey("data"))
                                     {
-                                        var _numMisa = row["InvNo"].ToString();
+                                        var _numMisa = row["VAT_So"].ToString();
                                         var _AuthID = resultResponse["data"]["inv_InvoiceAuth_id"].ToString();
                                         var _Type = resultResponse["data"]["inv_invoiceType"].ToString();
                                         var _seri = resultResponse["data"]["inv_invoiceSeries"].ToString();
@@ -328,23 +429,36 @@ namespace MinvoiceLoadDataMisa.Services
                                         if (CheckDBLog() == true)
                                         {
                                             string InserLog = $@"Insert into SaveLogs ([ID],[NumberMisa],[NumberMinvoice],[TimeAdd],[JsonConvert],[Editmode],[Inv_invoiceAuth_ID],[RefID],[Type], [Seri], [result]) " +
-                                        $@" VALUES (NEWID(), '{_numMisa}' ,{_numberinvoice} ,GETDATE(), N'{jArrayData}', N'{Properties.Settings.Default.Editmode}',N'{_AuthID}' ,N'{refId}',N'{_Type}', N'{_seri}',N'Tạo thành công')";
+                                                $@" VALUES (NEWID(), '{_numMisa}' ,{_numberinvoice} ,GETDATE(), N'{jArrayData}', N'{Properties.Settings.Default.Editmode}',N'{_AuthID}' ,N'{SoPhieu}',N'{_Type}', N'{_seri}',N'Tạo thành công')";
                                             SqlCommand _Insert = new SqlCommand(InserLog, _connLog);
                                             _Insert.ExecuteNonQuery();
 
                                             // Update IsInvoice vào Database Misa
-                                            string commandText = $"Update {BaseConfig.TableInvocie} SET IsInvoice = 1 where RefID='{refId}'";
-                                            SqlCommand command = new SqlCommand(commandText, sqlConnectionMisa);
-                                            command.ExecuteNonQuery();
-                                            scope.Complete();
-                                        } else
-                                        {
-                                            // Update IsInvoice vào Database Misa
-                                            string commandText = $"Update {BaseConfig.TableInvocie} SET IsInvoice = 1 where RefID='{refId}'";
+                                            string commandText = $"Update {BaseConfig.TableInvocie} SET IsInvoice = 1 where SoPhieu='{SoPhieu}'";
                                             SqlCommand command = new SqlCommand(commandText, sqlConnectionMisa);
                                             command.ExecuteNonQuery();
                                             scope.Complete();
                                         }
+                                        else
+                                        {
+                                            // Update IsInvoice vào Database Misa
+                                            string commandText = $"Update {BaseConfig.TableInvocie} SET IsInvoice = 1 where SoPhieu='{SoPhieu}'";
+                                            SqlCommand command = new SqlCommand(commandText, sqlConnectionMisa);
+                                            command.ExecuteNonQuery();
+                                            scope.Complete();
+                                        }
+                                    }
+                                    if (resultResponse.ContainsKey("error"))
+                                    {
+                                        if (CheckDBLog() == true)
+                                        {
+                                            string InserLog = $@"Insert into SaveLogs ([ID],[NumberMisa],[NumberMinvoice],[TimeAdd],[JsonConvert],[Editmode],[Inv_invoiceAuth_ID],[RefID],[Type], [Seri], [result]) " +
+                                        $@" VALUES (NEWID(), N'{row["VAT_So"].ToString()}', N'',GETDATE(), N'{jArrayData}', N'{Properties.Settings.Default.Editmode}',N'' ,N'{SoPhieu}',N'{resultResponse["error"]}', N'{jObjectData["inv_invoiceSeries"]}',N'Tạo hóa đơn thất bại')";
+                                            SqlCommand _Insert = new SqlCommand(InserLog, _connLog);
+                                            _Insert.ExecuteNonQuery();
+
+                                        }
+                                        
                                     }
                                 }
                                 catch (Exception ex)
@@ -382,6 +496,10 @@ namespace MinvoiceLoadDataMisa.Services
                 {
                     sqlConnection.Open();
                     string commandText = $@"SELECT name FROM master.dbo.sysdatabases WHERE name = N'LogMinvoice'";
+
+                    Log.Debug($"CheckDBLog - conn: {conn}");
+                    Log.Debug($"CheckDBLog - commandText: {commandText}");
+
 
                     SqlDataAdapter adapter = new SqlDataAdapter(commandText, sqlConnection);
                     adapter.Fill(table);

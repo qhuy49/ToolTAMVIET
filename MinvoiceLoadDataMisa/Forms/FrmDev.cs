@@ -54,10 +54,10 @@ namespace MinvoiceLoadDataMisa.Forms
                     string Querry = "";
                     if (string.IsNullOrEmpty(num2.ToString()))
                     {
-                         Querry = $@"Update {Properties.Settings.Default.TableInvocie} SET IsInvoice = null where invNo = {num1.Text} AND InvSeries = '{Properties.Settings.Default.KyHieu}' ";
+                         Querry = $@"Update {Properties.Settings.Default.TableInvocie} SET IsInvoice = null where VAT_So = {num1.Text} AND VAT_Seri = '{Properties.Settings.Default.KyHieu}' AND ChungTuID IN ('HDBH','HDDV') ";
                     } else
                     {
-                         Querry = $@"Update {Properties.Settings.Default.TableInvocie} SET IsInvoice = null where InvSeries = '{Properties.Settings.Default.KyHieu}' AND invNo between {num1.Text} AND {num2.Text}";
+                         Querry = $@"Update {Properties.Settings.Default.TableInvocie} SET IsInvoice = null where ChungTuID IN ('HDBH','HDDV') AND VAT_Seri = '{Properties.Settings.Default.KyHieu}' AND VAT_So between {num1.Text} AND {num2.Text}";
                     }
                     
                     SqlCommand cmd = new SqlCommand(Querry, _conn);
@@ -68,7 +68,7 @@ namespace MinvoiceLoadDataMisa.Forms
                     }
                     string insert = $@"Insert into SaveLogs ([ID],[NumberMisa],[NumberMinvoice],[TimeAdd],[JsonConvert],[Editmode],[Inv_invoiceAuth_ID],[result]) " +
                                         $@" VALUES (NEWID(), NULL ,NULL ,GETDATE(), NULL, NULL, NULL, " +
-                                        $@"N'Reload dữ liệu từ Misa lên Minvoice vì trc đó đã làm thao tác xóa hóa đơn trên Minvoice invNo between {num1.Text} AND {num2.Text} AND ký hiệu = {Properties.Settings.Default.KyHieu}')";
+                                        $@"N'Reload dữ liệu từ TÂM VIỆT lên Minvoice vì trc đó đã làm thao tác xóa hóa đơn trên Minvoice VAT_So between {num1.Text} AND {num2.Text} AND ký hiệu = {Properties.Settings.Default.KyHieu}')";
                     SqlCommand insertcmd = new SqlCommand(insert, connection);
                     insertcmd.ExecuteNonQuery();
                     connection.Close();
@@ -90,7 +90,7 @@ namespace MinvoiceLoadDataMisa.Forms
             var date1Convert = date1.Value.ToString("yyyy-MM-dd");
             var date2Convert = date2.Value.ToString("yyyy-MM-dd");
 
-            string Querry = $@"Update {Properties.Settings.Default.TableInvocie} SET IsInvoice = null where InvSeries = '{Properties.Settings.Default.KyHieu}' AND invDate between '{date1Convert}' AND '{date2Convert}'";
+            string Querry = $@"Update a SET a.IsInvoice = null from {Properties.Settings.Default.TableInvocie} a INNER JOIN {Settings.Default.TablePS_BangKeGTGT} b ON a.SoPhieu = b.SoPhieu where a.ChungTuID IN ('HDBH','HDDV') AND a.VAT_Seri = '{Properties.Settings.Default.KyHieu}' AND b.NgayPH between '{date1Convert}' AND '{date2Convert}'";
             SqlCommand cmd = new SqlCommand(Querry, _conn);
             cmd.ExecuteNonQuery();
 
@@ -101,7 +101,7 @@ namespace MinvoiceLoadDataMisa.Forms
 
             string insert = $@"Insert into SaveLogs ([ID],[NumberMisa],[NumberMinvoice],[TimeAdd],[JsonConvert],[Editmode],[Inv_invoiceAuth_ID],[result]) " +
                                 $@" VALUES (NEWID(), NULL ,NULL ,GETDATE(), NULL, NULL, NULL, " +
-                                $@"N'Reload dữ liệu từ Misa lên Minvoice vì trc đó đã làm thao tác xóa hóa đơn trên Minvoice invDate between {date1Convert} AND {date2Convert} AND ký hiệu = {Properties.Settings.Default.KyHieu}')";
+                                $@"N'Reload dữ liệu từ Tâm việt lên Minvoice vì trc đó đã làm thao tác xóa hóa đơn trên Minvoice NgayPH between {date1Convert} AND {date2Convert} AND ký hiệu = {Properties.Settings.Default.KyHieu}')";
             SqlCommand insertcmd = new SqlCommand(insert, connection);
             insertcmd.ExecuteNonQuery();
             connection.Close();
@@ -123,14 +123,14 @@ namespace MinvoiceLoadDataMisa.Forms
             }
             else
             {
-                string commandText = $@"Select RefID, IsInvoice from SAinvoice where InvNo = {num3.Text} AND InvSeries = '{Properties.Settings.Default.KyHieu}' ";
+                string commandText = $@"Select SoPhieu, IsInvoice from {Settings.Default.TableInvocie} where ChungTuID IN ('HDBH','HDDV') AND VAT_So = {num4.Text} AND VAT_Seri = '{Properties.Settings.Default.KyHieu}' ";
                 SqlDataAdapter adapter = new SqlDataAdapter(commandText, _conn);
                 adapter.Fill(table);
 
                 if(table.Rows.Count > 0)
                 {
                     var IsInvoice = table.Rows[0]["IsInvoice"].ToString();
-                    var RefID = table.Rows[0]["RefID"].ToString();
+                    var SoPhieu = table.Rows[0]["SoPhieu"].ToString();
                     if (IsInvoice == "0")
                     {
                         XtraMessageBox.Show("Hóa đơn không được tạo từ Tool do giá trị Column IsInvoice đang = 0");
@@ -139,13 +139,14 @@ namespace MinvoiceLoadDataMisa.Forms
                     {
                         var webClient = MinvoiceService.SetupWebClient();
                         var url = BaseConfig.UrlCommand;
-                        var command = "FixMisa";
+                        var command = Settings.Default.CmCheck;
                         JObject json = new JObject
                     {
                        {"command", command },
                          {  "parameter", new JObject
                               {
-                                   {"RefID", RefID.ToString() },
+                                 {"key_api", SoPhieu.ToString() },
+                                   {"inv_invoiceSeries", Settings.Default.KyHieu }
                               }
                          }
                     };
@@ -154,11 +155,11 @@ namespace MinvoiceLoadDataMisa.Forms
                         var result = JArray.Parse(rs);
                         if (result.Count > 0)
                         {
-                            XtraMessageBox.Show(" Hóa đơn được cập nhật tự động từ LoadDataMisa");
+                            XtraMessageBox.Show(" Hóa đơn được cập nhật tự động từ LoadData TÂM VIỆT");
                         }
                         else
                         {
-                            XtraMessageBox.Show(" Hóa đơn không được tạo LoadDataMisa vì RefID khác với Inv_InvoiceAuth_id");
+                            XtraMessageBox.Show(" Hóa đơn không được tạo từ LoadData TÂM VIỆT vì SoPhieu khác với key_api");
                         }
                     }
                 }   
@@ -179,14 +180,14 @@ namespace MinvoiceLoadDataMisa.Forms
             }
             else
             {
-                string commandText = $@"Select RefID, IsInvoice from SAinvoice where InvNo = {num4.Text} AND InvSeries = '{Properties.Settings.Default.KyHieu}' ";
+                string commandText = $@"Select SoPhieu, IsInvoice from {Settings.Default.TableInvocie} where ChungTuID IN ('HDBH','HDDV') AND VAT_So = {num4.Text} AND VAT_Seri = '{Properties.Settings.Default.KyHieu}' ";
                 SqlDataAdapter adapter = new SqlDataAdapter(commandText, _conn);
                 adapter.Fill(table);
 
                 if (table.Rows.Count > 0)
                 {
                     var IsInvoice = table.Rows[0]["IsInvoice"].ToString();
-                    var RefID = table.Rows[0]["RefID"].ToString();
+                    var SoPhieu = table.Rows[0]["SoPhieu"].ToString();
                     if (IsInvoice == "0")
                     {
                         XtraMessageBox.Show("Hóa đơn không được tạo từ Tool do giá trị Column IsInvoice đang = 0");
@@ -195,17 +196,18 @@ namespace MinvoiceLoadDataMisa.Forms
                     {
                         var webClient = MinvoiceService.SetupWebClient();
                         var url = BaseConfig.UrlCommand;
-                        var command = "FixMisa";
+                        var command = Settings.Default.CmCheck;
                         JObject json = new JObject
                     {
                        {"command", command },
                          {  "parameter", new JObject
                               {
-                                   {"RefID", RefID.ToString() },
+                                   {"key_api", SoPhieu.ToString() },
+                                   {"inv_invoiceSeries", Settings.Default.KyHieu }
                               }
                          }
                     };
-                        List<InvoiceObject> invoiceObjects = new List<InvoiceObject>();
+                        //List<InvoiceObject> invoiceObjects = new List<InvoiceObject>();
                         var rs = webClient.UploadString(url, json.ToString());
                         var result = JArray.Parse(rs);
                         //var _number = result[0]["inv_invoiceNumber"].ToString();
@@ -216,7 +218,7 @@ namespace MinvoiceLoadDataMisa.Forms
                         }
                         else
                         {
-                            XtraMessageBox.Show("Không thể kiểm tra vì hóa đơn không được Load tự động từ LoadDataMisa");
+                            XtraMessageBox.Show("Không thể kiểm tra vì hóa đơn không được Load tự động từ LoadData TÂM VIỆT");
                         }
                     }
                 }
@@ -247,9 +249,9 @@ namespace MinvoiceLoadDataMisa.Forms
                 connection.Open();
             }
             DataTable ReadLog = new DataTable();
-            string commandText = $@"Select [NumberMisa] , [TimeAdd] , [JsonConvert] , [Editmode] , [Type], [Seri]  From [dbo].[SaveLogs] "+
+            string commandText = $@"Select [NumberMisa] , [TimeAdd] , [JsonConvert] , [Editmode] , [Type], [Seri]  From [dbo].[SaveLogs]  "+
             $@"where [NumberMisa] = '{num6.Text}' AND Seri = '{Properties.Settings.Default.KyHieu}' "+
-            $@" AND TimeAdd = (SELECT MAX(TimeAdd)FROM [dbo].[SaveLogs] WHERE [NumberMisa] = '{num6.Text}')";
+            $@" AND TimeAdd = (SELECT MAX(TimeAdd)FROM [dbo].[SaveLogs] WHERE [NumberMisa] = '{num6.Text}') order by TimeAdd ASC ";
 
             SqlDataAdapter adapter = new SqlDataAdapter(commandText, connection);
             adapter.Fill(ReadLog);
@@ -266,7 +268,7 @@ namespace MinvoiceLoadDataMisa.Forms
                 connection.Open();
             }
             DataTable ReadLog = new DataTable();
-            string commandText = $@"Select [NumberMisa] , [TimeAdd] , [JsonConvert] , [Editmode] , [Type], [Seri]  From [dbo].[SaveLogs]";
+            string commandText = $@"Select [NumberMisa] , [TimeAdd] , [JsonConvert] , [Editmode] , [Type], [Seri]  From [dbo].[SaveLogs] order by TimeAdd ASC ";
             SqlDataAdapter adapter = new SqlDataAdapter(commandText, connection);
             adapter.Fill(ReadLog);
             GridView read = new GridView();

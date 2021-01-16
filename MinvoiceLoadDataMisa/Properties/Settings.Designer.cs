@@ -12,7 +12,7 @@ namespace MinvoiceLoadDataMisa.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "14.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.9.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -25,7 +25,7 @@ namespace MinvoiceLoadDataMisa.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("SAInvoice")]
+        [global::System.Configuration.DefaultSettingValueAttribute("PS_ChungTu")]
         public string TableInvocie {
             get {
                 return ((string)(this["TableInvocie"]));
@@ -37,7 +37,7 @@ namespace MinvoiceLoadDataMisa.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("SAInvoiceDetail")]
+        [global::System.Configuration.DefaultSettingValueAttribute("PS_ChiTiet")]
         public string TableInvoiceDetail {
             get {
                 return ((string)(this["TableInvoiceDetail"]));
@@ -49,13 +49,13 @@ namespace MinvoiceLoadDataMisa.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("SAVoucherDetail")]
-        public string TableVoucherDetail {
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public string DauVao {
             get {
-                return ((string)(this["TableVoucherDetail"]));
+                return ((string)(this["DauVao"]));
             }
             set {
-                this["TableVoucherDetail"] = value;
+                this["DauVao"] = value;
             }
         }
         
@@ -97,7 +97,7 @@ namespace MinvoiceLoadDataMisa.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://demo.minvoice.com.vn/api/Account/Login")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://demohoadon.minvoice.com.vn/api/Account/Login")]
         public string UrlLogin {
             get {
                 return ((string)(this["UrlLogin"]));
@@ -109,7 +109,7 @@ namespace MinvoiceLoadDataMisa.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://demo.minvoice.com.vn/api/System/Save")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://demohoadon.minvoice.com.vn/api/System/Save")]
         public string UrlSave {
             get {
                 return ((string)(this["UrlSave"]));
@@ -121,7 +121,7 @@ namespace MinvoiceLoadDataMisa.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://demo.minvoice.com.vn/api/Invoice/GetById?id=")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://demohoadon.minvoice.com.vn/api/Invoice/GetById?id=")]
         public string UrlGetInvoiceByInvoiceAuthId {
             get {
                 return ((string)(this["UrlGetInvoiceByInvoiceAuthId"]));
@@ -157,7 +157,7 @@ namespace MinvoiceLoadDataMisa.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("MV/18E")]
+        [global::System.Configuration.DefaultSettingValueAttribute("AA/20E")]
         public string KyHieu {
             get {
                 return ((string)(this["KyHieu"]));
@@ -169,7 +169,8 @@ namespace MinvoiceLoadDataMisa.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://demo.minvoice.com.vn/api/System/GetDataReferencesByRefId?refId=RF00187")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://demohoadon.minvoice.com.vn/api/System/GetDataReferencesByRefId?refId=RF001" +
+            "87")]
         public string UrlRef {
             get {
                 return ((string)(this["UrlRef"]));
@@ -193,13 +194,13 @@ namespace MinvoiceLoadDataMisa.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("SAVoucher")]
-        public string TableVoucher {
+        [global::System.Configuration.DefaultSettingValueAttribute("DM_DoiTuongCongNo")]
+        public string TableDM_DTCN {
             get {
-                return ((string)(this["TableVoucher"]));
+                return ((string)(this["TableDM_DTCN"]));
             }
             set {
-                this["TableVoucher"] = value;
+                this["TableDM_DTCN"] = value;
             }
         }
         
@@ -217,7 +218,7 @@ namespace MinvoiceLoadDataMisa.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://demo.minvoice.com.vn/api/System/ExecuteCommand")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://demohoadon.minvoice.com.vn/api/System/ExecuteCommand")]
         public string UrlCommand {
             get {
                 return ((string)(this["UrlCommand"]));
@@ -241,25 +242,25 @@ namespace MinvoiceLoadDataMisa.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("InventoryItem")]
-        public string TableInventoryItem {
+        [global::System.Configuration.DefaultSettingValueAttribute("PS_BangKeGTGT")]
+        public string TablePS_BangKeGTGT {
             get {
-                return ((string)(this["TableInventoryItem"]));
+                return ((string)(this["TablePS_BangKeGTGT"]));
             }
             set {
-                this["TableInventoryItem"] = value;
+                this["TablePS_BangKeGTGT"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Unit")]
-        public string TableUnit {
+        [global::System.Configuration.DefaultSettingValueAttribute("CM00034")]
+        public string CmCheck {
             get {
-                return ((string)(this["TableUnit"]));
+                return ((string)(this["CmCheck"]));
             }
             set {
-                this["TableUnit"] = value;
+                this["CmCheck"] = value;
             }
         }
         

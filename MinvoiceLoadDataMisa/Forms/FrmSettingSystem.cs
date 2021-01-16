@@ -33,7 +33,7 @@ namespace MinvoiceLoadDataMisa.Forms
             lblConnectionString.Text = BaseConfig.ConnectionString;
             txtTableInvoice.Text = BaseConfig.TableInvocie;
             txtTableInvoiceDetail.Text = BaseConfig.TableInvoiceDetail;
-            txtTableVoucherDetail.Text = BaseConfig.TableVoucherDetail;
+            txtDauVao.Text = BaseConfig.DauVao;
             txtUserLoginWeb.Text = BaseConfig.UsernameLoginWeb;
             txtPassLoginWeb.Text = BaseConfig.PasswordLoginWeb;
             txtUrlLogin.Text = BaseConfig.UrlLogin;
@@ -44,13 +44,13 @@ namespace MinvoiceLoadDataMisa.Forms
             //txtKyHieu.Text = BaseConfig.KyHieu;
             txtUrlRef.Text = BaseConfig.UrlRef;
             //txtInvoiceCodeId.Text = BaseConfig.InvoiceCodeId;
-            txtTableVoucher.Text = BaseConfig.TableVoucher;
+            txtTableDM_DTCN.Text = BaseConfig.TableDM_DTCN;
             txtCommand.Text = BaseConfig.Command;
             txtUrlCommand.Text = BaseConfig.UrlCommand;
             cboVersion.SelectedValue = BaseConfig.Version;
 
-            txtTableInventoryItem.Text = BaseConfig.TableInventoryItem;
-            txtTableUnit.Text = BaseConfig.TableUnit;
+            txtTablePS_BangKeGTGT.Text = BaseConfig.TablePS_BangKeGTGT;
+            txtCmCheck.Text = BaseConfig.CmCheck;
             txtRefInventoryItem.Text = BaseConfig.RefInventoryItem;
             txtRefUnit.Text = BaseConfig.RefUnit;
         }
@@ -61,8 +61,8 @@ namespace MinvoiceLoadDataMisa.Forms
 
             string tableInvoice = txtTableInvoice.Text;
             string tableInvoiceDetail = txtTableInvoiceDetail.Text;
-            string tableVoucherDetail = txtTableVoucherDetail.Text;
-            string tableVoucher = txtTableVoucher.Text;
+            string DauVao = txtDauVao.Text;
+            string tableDM_DTDN = txtTableDM_DTCN.Text;
 
             string userNameWeb = txtUserLoginWeb.Text;
             string passWordWeb = txtPassLoginWeb.Text;
@@ -81,16 +81,16 @@ namespace MinvoiceLoadDataMisa.Forms
 
             string version = (cboVersion.SelectedItem as VersionObject)?.Value;
 
-            string tableInventoryItem = txtTableInventoryItem.Text;
-            string tableUnit = txtTableUnit.Text;
+            string tablePS_BangKeGTGT = txtTablePS_BangKeGTGT.Text;
+            string CmCheck = txtCmCheck.Text;
             string refInventoryItem = txtRefInventoryItem.Text;
             string refUnit = txtRefUnit.Text;
 
 
             CommonService.UpdateSettingAppConfig(CommonConstants.TableInvocie, tableInvoice);
             CommonService.UpdateSettingAppConfig(CommonConstants.TableInvoiceDetail, tableInvoiceDetail);
-            CommonService.UpdateSettingAppConfig(CommonConstants.TableVoucherDetail, tableVoucherDetail);
-            CommonService.UpdateSettingAppConfig(CommonConstants.TableVoucher, tableVoucher);
+            CommonService.UpdateSettingAppConfig(CommonConstants.DauVao, DauVao);
+            CommonService.UpdateSettingAppConfig(CommonConstants.TableDM_DTCN, tableDM_DTDN);
             CommonService.UpdateSettingAppConfig(CommonConstants.UsernameLoginWeb, userNameWeb);
             CommonService.UpdateSettingAppConfig(CommonConstants.PasswordLoginWeb, passWordWeb);
             CommonService.UpdateSettingAppConfig(CommonConstants.UrlLogin, urlLogin);
@@ -106,16 +106,16 @@ namespace MinvoiceLoadDataMisa.Forms
             CommonService.UpdateSettingAppConfig(CommonConstants.UrlCommand, urlCommand);
             CommonService.UpdateSettingAppConfig(CommonConstants.Version, version);
 
-            CommonService.UpdateSettingAppConfig(CommonConstants.TableInventoryItem, tableInventoryItem);
-            CommonService.UpdateSettingAppConfig(CommonConstants.TableUnit, tableUnit);
+            CommonService.UpdateSettingAppConfig(CommonConstants.TablePS_BangKeGTGT, tablePS_BangKeGTGT);
+            CommonService.UpdateSettingAppConfig(CommonConstants.CmCheck, CmCheck);
             CommonService.UpdateSettingAppConfig(CommonConstants.RefInventoryItem, refInventoryItem);
             CommonService.UpdateSettingAppConfig(CommonConstants.RefUnit, refUnit);
 
 
             BaseConfig.TableInvocie = tableInvoice;
             BaseConfig.TableInvoiceDetail = tableInvoiceDetail;
-            BaseConfig.TableVoucherDetail = tableVoucherDetail;
-            BaseConfig.TableVoucher = tableVoucher;
+            BaseConfig.DauVao = DauVao;
+            BaseConfig.TableDM_DTCN = tableDM_DTDN;
             BaseConfig.UsernameLoginWeb = userNameWeb;
             BaseConfig.PasswordLoginWeb = passWordWeb;
             BaseConfig.UrlLogin = urlLogin;
@@ -130,8 +130,8 @@ namespace MinvoiceLoadDataMisa.Forms
             BaseConfig.UrlCommand = urlCommand;
             BaseConfig.Version = version;
 
-            BaseConfig.TableInventoryItem = tableInventoryItem;
-            BaseConfig.TableUnit = tableUnit;
+            BaseConfig.TablePS_BangKeGTGT = tablePS_BangKeGTGT;
+            BaseConfig.CmCheck = CmCheck;
             BaseConfig.RefInventoryItem = refInventoryItem;
             BaseConfig.RefUnit = refUnit;
 
@@ -144,7 +144,7 @@ namespace MinvoiceLoadDataMisa.Forms
 
         private void Check()
         {
-            if (string.IsNullOrEmpty(txtTableInvoice.Text) || string.IsNullOrEmpty(txtTableInvoiceDetail.Text) || string.IsNullOrEmpty(txtTableVoucherDetail.Text) || string.IsNullOrEmpty(txtUserLoginWeb.Text) || string.IsNullOrEmpty(txtPassLoginWeb.Text) || string.IsNullOrEmpty(txtUrlLogin.Text) || string.IsNullOrEmpty(txtUrlSave.Text) || string.IsNullOrEmpty(txtUrlGetInvoice.Text) || string.IsNullOrEmpty(txtCommand.Text) || string.IsNullOrEmpty(txtUrlCommand.Text))
+            if (string.IsNullOrEmpty(txtTableInvoice.Text) || string.IsNullOrEmpty(txtTableInvoiceDetail.Text) || string.IsNullOrEmpty(txtDauVao.Text) || string.IsNullOrEmpty(txtUserLoginWeb.Text) || string.IsNullOrEmpty(txtPassLoginWeb.Text) || string.IsNullOrEmpty(txtUrlLogin.Text) || string.IsNullOrEmpty(txtUrlSave.Text) || string.IsNullOrEmpty(txtUrlGetInvoice.Text) || string.IsNullOrEmpty(txtCommand.Text) || string.IsNullOrEmpty(txtUrlCommand.Text) || string.IsNullOrEmpty(txtCmCheck.Text))
             {
                 XtraMessageBox.Show("Vui lòng nhập đầy đủ thông tin");
             }
@@ -238,7 +238,7 @@ namespace MinvoiceLoadDataMisa.Forms
 
                 DataTable table = new DataTable();
                 //Lấy đường dẫn lưu Database Misa trên server
-                string _SelectFolder = "SELECT physical_name FROM sys.database_files WHERE physical_name LIKE '%.mdf'";
+                string _SelectFolder = "SELECT physical_name FROM sys.database_files WHERE physical_name LIKE '%.mdf' OR physical_name LIKE '%.smd'";
                 SqlDataAdapter adapter = new SqlDataAdapter(_SelectFolder, Connect);
                 adapter.Fill(table);
 

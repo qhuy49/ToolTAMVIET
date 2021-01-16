@@ -25,6 +25,7 @@ namespace MinvoiceLoadDataMisa.Forms
         {
             var mauHoaDon = searchLookUpEdit1View.GetFocusedRow() as MauHoaDon;
             CommonService.UpdateSettingAppConfig(CommonConstants.Editmode, "1");
+            
             var a = Properties.Settings.Default.KyHieu;
             var b = Properties.Settings.Default.MauSo;
             var c = Properties.Settings.Default.InvoiceCodeId;

@@ -157,8 +157,10 @@ namespace MinvoiceLoadDataMisa
         private void btnUpdate_Click(object sender, EventArgs e)
         {
             //timer1.Stop();
+            backgroundWorker1.CancelAsync();
             FrmSelectInvoice frmSelectInvoice = new FrmSelectInvoice();
             frmSelectInvoice.ShowDialog();
+            backgroundWorker1.RunWorkerAsync();
             //timer1.Start();
         }
 
@@ -205,31 +207,57 @@ namespace MinvoiceLoadDataMisa
         {
             backgroundWorker1.CancelAsync();
             _bw.RunWorkerAsync();
-
-            SqlConnection _connect =  new SqlConnection(Properties.Settings.Default.connectLog);
-            if(_connect.State == ConnectionState.Closed)
+            if (CheckDBLog() == true)
             {
-                _connect.Open();
+                SqlConnection _connect = new SqlConnection(Properties.Settings.Default.connectLog);
+                if (_connect.State == ConnectionState.Closed)
+                {
+                    _connect.Open();
+                }
+                DataTable table = new DataTable();
+                string commandText = $@"SELECT ID from dbo.SaveLogs ";
+                SqlDataAdapter adapter = new SqlDataAdapter(commandText, _connect);
+                adapter.Fill(table);
+
+                if (table.Rows.Count > 500)
+                {
+                    string _delete = $@" DELETE dbo.SaveLogs ";
+                    SqlCommand Delete = new SqlCommand(_delete, _connect);
+                    Delete.ExecuteNonQuery();
+                }
+                _connect.Close();
+            }else
+            {
+                
             }
 
-            DataTable table = new DataTable();
-            string commandText = $@"SELECT ID from dbo.SaveLogs ";
-            SqlDataAdapter adapter = new SqlDataAdapter(commandText, _connect);
-            adapter.Fill(table);
-
-            if(table.Rows.Count > 500)
-            {
-                string _delete = $@" DELETE dbo.SaveLogs ";
-                SqlCommand Delete = new SqlCommand(_delete, _connect);
-                Delete.ExecuteNonQuery();
-            }
-            _connect.Close();
 
         }
 
         private void btnFix_Click(object sender, EventArgs e)
         {
             FrmLogin frm = new FrmLogin(); frm.ShowDialog();
+        }
+        private static bool CheckDBLog()
+        {
+            string conn = Properties.Settings.Default.ConnectionString;
+            DataTable table = new DataTable();
+            using (SqlConnection sqlConnection = new SqlConnection(conn))
+            {
+                try
+                {
+                    sqlConnection.Open();
+                    string commandText = $@"SELECT name FROM master.dbo.sysdatabases WHERE name = N'LogMinvoice'";
+
+                    SqlDataAdapter adapter = new SqlDataAdapter(commandText, sqlConnection);
+                    adapter.Fill(table);
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+            }
+            return table.Rows.Count > 0;
         }
     }
 }

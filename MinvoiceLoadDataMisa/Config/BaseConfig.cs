@@ -11,7 +11,7 @@ namespace MinvoiceLoadDataMisa.Config
 
         public static string TableInvoiceDetail = Properties.Settings.Default.TableInvoiceDetail.Trim();
 
-        public static string TableVoucherDetail = Properties.Settings.Default.TableVoucherDetail.Trim();
+        public static string DauVao = Properties.Settings.Default.DauVao.Trim();
 
         public static string ConnectionString = Properties.Settings.Default.ConnectionString.Trim();
 
@@ -38,7 +38,7 @@ namespace MinvoiceLoadDataMisa.Config
 
         public static string InvoiceCodeId = Properties.Settings.Default.InvoiceCodeId.Trim();
 
-        public static string TableVoucher = Properties.Settings.Default.TableVoucher.Trim();
+        public static string TableDM_DTCN = Properties.Settings.Default.TableDM_DTCN.Trim();
 
         public static string Command = Properties.Settings.Default.Command.Trim();
 
@@ -46,9 +46,9 @@ namespace MinvoiceLoadDataMisa.Config
 
         public static string Version = Properties.Settings.Default.Version.Trim();
 
-        public static string TableInventoryItem = Properties.Settings.Default.TableInventoryItem.Trim();
+        public static string TablePS_BangKeGTGT = Properties.Settings.Default.TablePS_BangKeGTGT.Trim();
 
-        public static string TableUnit = Properties.Settings.Default.TableUnit.Trim();
+        public static string CmCheck = Properties.Settings.Default.CmCheck.Trim();
 
         public static string RefInventoryItem = Properties.Settings.Default.RefInventoryItem.Trim();
 
