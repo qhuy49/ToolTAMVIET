@@ -69,6 +69,7 @@ namespace MinvoiceLoadDataMisa.Services
                         {
                             var inv_invoiceauth_id = "";
                             var invNo="";
+
                             var jObjectData = JsonConvert.ConvertData(sqlConnectionMisa, row, inv_invoiceauth_id.ToString(), invNo.ToString());
                             var jArrayData = new JArray { jObjectData };
                             var jObjectMainData = new JObject

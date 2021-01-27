@@ -25,7 +25,7 @@ namespace MinvoiceLoadDataMisa.Services
             DataTable dataTable = new DataTable();
             try
             {
-                string commandText = $"SELECT {tableName}.*, {tableBANGKE}.*, {tableDMDTCN}.Email, {tableDMDTCN}.DienThoai FROM {tableName} LEFT JOIN {tableBANGKE} ON {tableName}.SoPhieu = {tableBANGKE}.SoPhieu LEFT JOIN {tableDMDTCN} ON {tableDMDTCN}.ID = {tableName}.DoiTuongCongNoID {where}";
+                string commandText = $"SELECT {tableName}.SuaTienThue as SuaTienThue1, {tableName}.*, {tableBANGKE}.*, {tableDMDTCN}.Email, {tableDMDTCN}.DienThoai FROM {tableName} LEFT JOIN {tableBANGKE} ON {tableName}.SoPhieu = {tableBANGKE}.SoPhieu LEFT JOIN {tableDMDTCN} ON {tableDMDTCN}.ID = {tableName}.DoiTuongCongNoID {where}";
                 //if (BaseConfig.Version.Equals("2017"))
                 //{
                 //    commandText =

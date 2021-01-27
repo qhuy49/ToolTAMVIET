@@ -100,6 +100,8 @@ namespace MinvoiceLoadDataMisa.Services
                 jObject.Add("ma_dh", (!string.IsNullOrEmpty(row["ChungTuID"].ToString()) ? row["ChungTuID"].ToString() : ""));
                 jObject.Add("inv_sellerBankAccount", "");
 
+                jObject.Add("so_benh_an", (!string.IsNullOrEmpty(row["NoiDung"].ToString()) ? row["NoiDung"].ToString() : ""));
+
                 jObject.Add("inv_sellerBankName", "");
                 jObject.Add("trang_thai", "Chờ ký");
                 jObject.Add("nguoi_ky", "");
@@ -216,12 +218,21 @@ namespace MinvoiceLoadDataMisa.Services
         /// </summary>
         /// <param name="row"></param>
         /// <returns></returns>
-        public static JObject ConvertDetailJObjectSaInvoiceDetail(DataRow row, double thue)
+        public static JObject ConvertDetailJObjectSaInvoiceDetail(DataRow row, double thue, double inv_vatAmount1, bool suathue)
         {
             try
             {
-                double vatAmount = !string.IsNullOrEmpty(row["PhatSinh"].ToString()) ? double.Parse(row["PhatSinh"].ToString())  : 0;
-                vatAmount = vatAmount * thue / 100;
+                double vatAmount = 0;
+                if (suathue == true)
+                {
+                    vatAmount = inv_vatAmount1;
+                }
+                else
+                {
+                    vatAmount = !string.IsNullOrEmpty(row["PhatSinh"].ToString()) ? double.Parse(row["PhatSinh"].ToString()) : 0;
+                    vatAmount = vatAmount * thue / 100;
+                }
+               
 
                 var discountAmount = !string.IsNullOrEmpty(row["TienChietKhauTruocThue"].ToString())
                     ? double.Parse(row["TienChietKhauTruocThue"].ToString())
@@ -306,11 +317,32 @@ namespace MinvoiceLoadDataMisa.Services
                 var masterJObject = ConvertMasterObject(row, inv_invoiceauth_id, invNo);
 
                 var SoPhieu = row["SoPhieu"].ToString();
-                var jArrayDetail = GetJArrayDetail(sqlConnection, SoPhieu, out inv_TotalAmount, out inv_TotalAmountWithoutVat, out inv_vatAmount, out inv_discountAmount, thue);
-                masterJObject.Add("inv_TotalAmount", inv_TotalAmount);
-                masterJObject.Add("inv_TotalAmountWithoutVat", inv_TotalAmountWithoutVat);
-                masterJObject.Add("inv_vatAmount", inv_vatAmount);
-                masterJObject.Add("inv_discountAmount", inv_discountAmount);
+                var jArrayDetail = GetJArrayDetail(sqlConnection, SoPhieu, out inv_TotalAmount, out inv_TotalAmountWithoutVat, out inv_vatAmount, out inv_discountAmount, thue, row);
+
+                if (!string.IsNullOrEmpty(row["SuaTienThue1"].ToString()) && bool.Parse(row["SuaTienThue1"].ToString()) == true)
+                {
+                    
+                   
+                    masterJObject.Add("inv_TotalAmountWithoutVat", inv_TotalAmountWithoutVat);
+
+                    inv_vatAmount = !string.IsNullOrEmpty(row["TienThue"].ToString()) ? double.Parse(row["TienThue"].ToString()) : 0;
+
+                    masterJObject.Add("inv_vatAmount", inv_vatAmount);
+
+                    masterJObject.Add("inv_discountAmount", inv_discountAmount);
+                    inv_TotalAmount = inv_TotalAmountWithoutVat - inv_discountAmount + inv_vatAmount;
+
+
+                     masterJObject.Add("inv_TotalAmount", inv_TotalAmount);
+                }
+                else
+                {
+                    masterJObject.Add("inv_TotalAmount", inv_TotalAmount);
+                    masterJObject.Add("inv_TotalAmountWithoutVat", inv_TotalAmountWithoutVat);
+                    masterJObject.Add("inv_vatAmount", inv_vatAmount);
+                    masterJObject.Add("inv_discountAmount", inv_discountAmount);
+                }
+           
 
                 var data = new JObject
                 {
@@ -330,13 +362,14 @@ namespace MinvoiceLoadDataMisa.Services
             }
         }
 
-        private static JArray GetJArrayDetail(SqlConnection sqlConnection, string SoPhieu, out double inv_TotalAmount, out double inv_TotalAmountWithoutVat, out double inv_vatAmount, out double inv_discountAmount, double thue)
+        private static JArray GetJArrayDetail(SqlConnection sqlConnection, string SoPhieu, out double inv_TotalAmount, out double inv_TotalAmountWithoutVat, out double inv_vatAmount, out double inv_discountAmount, double thue, DataRow row)
         {
             inv_TotalAmount = 0.0;
             inv_TotalAmountWithoutVat = 0.0;
             inv_vatAmount = 0.0;
             inv_discountAmount = 0.0;
-
+            double inv_vatAmount1 = 0;
+            bool suathue = false;
             var jArrayDetail = new JArray();
 
            
@@ -348,17 +381,42 @@ namespace MinvoiceLoadDataMisa.Services
                 var dataTableInvoiceDetail = DataContext.GetDataTableTest(sqlConnection, sqlSelectInvoiceDetail);
                 if (dataTableInvoiceDetail.Rows.Count > 0)
                 {
-                    foreach (DataRow dataRowInvoiceDetail in dataTableInvoiceDetail.Rows)
+                    if (!string.IsNullOrEmpty(row["SuaTienThue1"].ToString()) && bool.Parse(row["SuaTienThue1"].ToString()) == true)
                     {
-                        var detailJObject = ConvertDetailJObjectSaInvoiceDetail(dataRowInvoiceDetail, thue);
-                        inv_TotalAmount += (double)detailJObject["inv_TotalAmount"];
-                        inv_TotalAmountWithoutVat += (double)detailJObject["inv_TotalAmountWithoutVat"];
-                        inv_vatAmount += (double)detailJObject["inv_vatAmount"];
-                        inv_discountAmount += (double)detailJObject["inv_discountAmount"];
-                        jArrayDetail.Add(detailJObject);
+                        if (dataTableInvoiceDetail.Rows.Count == 1)
+                        {
+                            foreach (DataRow dataRowInvoiceDetail in dataTableInvoiceDetail.Rows)
+                            {
+                                suathue = true;
+                                inv_vatAmount1 = !string.IsNullOrEmpty(row["TienThue"].ToString()) ? double.Parse(row["TienThue"].ToString()) : 0;
+                                var detailJObject = ConvertDetailJObjectSaInvoiceDetail(dataRowInvoiceDetail, thue, inv_vatAmount1, suathue);
+
+                                inv_TotalAmount += (double)detailJObject["inv_TotalAmount"];
+                                inv_TotalAmountWithoutVat += (double)detailJObject["inv_TotalAmountWithoutVat"];
+                                inv_vatAmount += (double)detailJObject["inv_vatAmount"];
+                                inv_discountAmount += (double)detailJObject["inv_discountAmount"];
+                                jArrayDetail.Add(detailJObject);
 
 
-                        Log.Debug("OK");
+                                Log.Debug("OK");
+                            }
+                        }
+                    }
+                    else
+                    {
+                        foreach (DataRow dataRowInvoiceDetail in dataTableInvoiceDetail.Rows)
+                        {
+
+                            var detailJObject = ConvertDetailJObjectSaInvoiceDetail(dataRowInvoiceDetail, thue, inv_vatAmount1, suathue);
+                            inv_TotalAmount += (double)detailJObject["inv_TotalAmount"];
+                            inv_TotalAmountWithoutVat += (double)detailJObject["inv_TotalAmountWithoutVat"];
+                            inv_vatAmount += (double)detailJObject["inv_vatAmount"];
+                            inv_discountAmount += (double)detailJObject["inv_discountAmount"];
+                            jArrayDetail.Add(detailJObject);
+
+
+                            Log.Debug("OK");
+                        }
                     }
                 }
 
